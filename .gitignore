@@ -1,41 +1,77 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# 📦 Dependencies
 /node_modules
 /.pnp
 .pnp.*
+
+# 📦 Yarn / PNPM / Bun
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.pnpm-store/
+.bun/
+bun.lockb
 
-# testing
+# 🧪 Testing
 /coverage
+/playwright-report
+/test-results
+/jest-html-reporters-*
 
-# next.js
+# ⚙️ Next.js build artifacts
 /.next/
-/out/
-
-# production
+out/
 /build
+/.vercel/
 
-# misc
+# 🧠 IDE / Editors
+.idea/
+.vscode/
+*.code-workspace
+
+# 🧹 System / OS
 .DS_Store
-*.pem
+Thumbs.db
 
-# debug
+# 🗝️ Env files (do not commit secrets!)
+.env
+.env.*.local
+.env.local
+.env.production
+.env.development
+.env.test
+
+# 📜 Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+bun-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
+# 🔐 Certificates / Keys
+*.pem
+*.crt
+*.key
 
-# vercel
-.vercel
-
-# typescript
+# 🧱 TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# 🧭 Misc
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# 🐳 Docker
+Dockerfile.local
+docker-compose.override.yml
+.dockerignore
+
+# 🧩 Lint / Cache
+.eslintcache
+.stylelintcache
+.prettier-cache
+.cache/
