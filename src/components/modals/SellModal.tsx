@@ -8,11 +8,11 @@ import {useLanguage} from "@/context";
 import uk from "@/locales/uk";
 import en from "@/locales/en";
 
-interface BayModalProps {
-    setBuyOpen: (open: boolean) => void;
+interface SellModalProps {
+    setSellOpen: (open: boolean) => void;
 }
 
-interface BuyFormData {
+interface SellFormData {
     symbol: string;
     amount: number;
     price: number;
@@ -24,8 +24,8 @@ interface OptionType {
     value: string;
 }
 
-export default function BayModal({setBuyOpen}: BayModalProps) {
-    const {control, register, handleSubmit, reset} = useForm<BuyFormData>({
+export default function SellModal({setSellOpen}: SellModalProps) {
+    const {control, register, handleSubmit, reset} = useForm<SellFormData>({
         defaultValues: {
             symbol: "",
             amount: 0,
@@ -55,17 +55,17 @@ export default function BayModal({setBuyOpen}: BayModalProps) {
         fetchSymbols();
     }, []);
 
-    const onSubmit = (data: BuyFormData) => {
+    const onSubmit = (data: SellFormData) => {
         console.log("Buy data:", data);
         reset();
-        setBuyOpen(false);
+        setSellOpen(false);
     };
 
     return (
         <>
             <div
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-                onClick={() => setBuyOpen(false)}
+                onClick={() => setSellOpen(false)}
             />
 
             <div
@@ -80,9 +80,9 @@ export default function BayModal({setBuyOpen}: BayModalProps) {
         "
             >
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold">{t.buyCrypto}</h2>
+                    <h2 className="text-lg font-semibold">{t.sellCrypto}</h2>
                     <button
-                        onClick={() => setBuyOpen(false)}
+                        onClick={() => setSellOpen(false)}
                         className="p-1 rounded hover:bg-[var(--color-border)]/30 transition"
                     >
                         <X size={20}/>

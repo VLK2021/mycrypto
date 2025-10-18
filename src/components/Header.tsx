@@ -7,6 +7,7 @@ import uk from "@/locales/uk";
 import en from "@/locales/en";
 import {useState} from "react";
 import BayModal from "@/components/modals/BayModal";
+import SellModal from "@/components/modals/SellModal";
 
 export default function Header() {
     const [isBuyOpen, setBuyOpen] = useState(false);
@@ -59,6 +60,7 @@ export default function Header() {
                         transition-colors duration-200
                         text-center
                     "
+                    onClick={() => setSellOpen(true)}
                 >
                     {t.sell || "SELL"}
                 </button>
@@ -72,7 +74,9 @@ export default function Header() {
             {isBuyOpen && <BayModal
                 setBuyOpen={setBuyOpen}
             />}
-            {isSellOpen && ''}
+            {isSellOpen && <SellModal
+                setSellOpen={setSellOpen}
+            />}
         </header>
     );
 }
