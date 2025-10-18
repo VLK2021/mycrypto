@@ -5,8 +5,13 @@ import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { useLanguage } from "@/context";
 import uk from "@/locales/uk";
 import en from "@/locales/en";
+import {useState} from "react";
+import BayModal from "@/components/modals/BayModal";
 
 export default function Header() {
+    const [isBuyOpen, setBuyOpen] = useState(false);
+    const [isSellOpen, setSellOpen] = useState(false);
+
     const { lang } = useLanguage();
     const t = lang === "uk" ? uk : en;
 
@@ -40,6 +45,7 @@ export default function Header() {
                         transition-colors duration-200
                         text-center
                     "
+                    onClick={() => setBuyOpen(true)}
                 >
                     {t.buy || "BUY"}
                 </button>
@@ -62,6 +68,11 @@ export default function Header() {
                 <LangSwitcher />
                 <ThemeSwitcher />
             </div>
+
+            {isBuyOpen && <BayModal
+                setBuyOpen={setBuyOpen}
+            />}
+            {isSellOpen && ''}
         </header>
     );
 }
