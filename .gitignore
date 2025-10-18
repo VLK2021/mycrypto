@@ -75,3 +75,5 @@ docker-compose.override.yml
 .stylelintcache
 .prettier-cache
 .cache/
+
+/src/generated/prisma
