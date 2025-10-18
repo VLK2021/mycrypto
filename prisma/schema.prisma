@@ -10,11 +10,11 @@ datasource db {
 
 model Transaction {
   id        Int      @id @default(autoincrement())
-  symbol    String // Тікет монети, наприклад SOL або BTC
-  type      String // "BUY" або "SELL"
-  amount    Float // Кількість монет
-  price     Float // Ціна за одиницю
-  total     Float // Сума (автоматично обчислюється, коли будемо записувати)
-  date      DateTime // Дата операції
+  symbol    String
+  type      String
+  amount    Float
+  price     Float
+  total     Float
+  date      DateTime
   createdAt DateTime @default(now())
 }

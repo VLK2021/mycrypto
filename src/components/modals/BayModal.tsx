@@ -16,7 +16,7 @@ interface BuyFormData {
     symbol: string;
     amount: number;
     price: number;
-    date: string; // 👈 нове поле
+    date: string;
 }
 
 interface OptionType {
@@ -55,11 +55,25 @@ export default function BayModal({setBuyOpen}: BayModalProps) {
         fetchSymbols();
     }, []);
 
-    const onSubmit = (data: BuyFormData) => {
-        console.log("Buy data:", data);
-        reset();
-        setBuyOpen(false);
+    const onSubmit = async (data: BuyFormData) => {
+        try {
+            const res = await fetch("/api/transactions/buy", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) throw new Error("Failed to save transaction");
+            const result = await res.json();
+            console.log("✅ Saved BUY transaction:", result);
+
+            reset();
+            setBuyOpen(false);
+        } catch (err) {
+            console.error("Error:", err);
+        }
     };
+
 
     return (
         <>

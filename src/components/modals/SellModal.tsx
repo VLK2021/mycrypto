@@ -16,7 +16,7 @@ interface SellFormData {
     symbol: string;
     amount: number;
     price: number;
-    date: string; // 👈 нове поле
+    date: string;
 }
 
 interface OptionType {
@@ -55,11 +55,25 @@ export default function SellModal({setSellOpen}: SellModalProps) {
         fetchSymbols();
     }, []);
 
-    const onSubmit = (data: SellFormData) => {
-        console.log("Buy data:", data);
-        reset();
-        setSellOpen(false);
+    const onSubmit = async (data: SellFormData) => {
+        try {
+            const res = await fetch("/api/transactions/sell", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) throw new Error("Failed to save transaction");
+            const result = await res.json();
+            console.log("✅ Saved SELL transaction:", result);
+
+            reset();
+            setSellOpen(false);
+        } catch (err) {
+            console.error("Error:", err);
+        }
     };
+
 
     return (
         <>
