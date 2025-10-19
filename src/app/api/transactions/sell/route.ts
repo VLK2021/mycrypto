@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma"; // 👈 імпорт з твого згенерованого клієнта
+import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
@@ -11,12 +11,10 @@ export async function POST(req: Request) {
         const priceNum = parseFloat(price);
         const total = amountNum * priceNum;
 
-        // 🧩 Перевірка валідності даних
         if (!symbol || isNaN(amountNum) || isNaN(priceNum) || !date) {
             return NextResponse.json({ error: "Invalid data" }, { status: 400 });
         }
 
-        // 💾 Створення транзакції (тип SELL)
         const transaction = await prisma.transaction.create({
             data: {
                 symbol,

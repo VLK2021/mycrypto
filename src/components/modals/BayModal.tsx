@@ -22,6 +22,7 @@ interface BuyFormData {
 interface OptionType {
     label: string;
     value: string;
+    icon: string;
 }
 
 export default function BayModal({setBuyOpen}: BayModalProps) {
@@ -113,49 +114,93 @@ export default function BayModal({setBuyOpen}: BayModalProps) {
                             <Controller
                                 name="symbol"
                                 control={control}
-                                render={({field}) => (
-                                    <Select<OptionType, false, GroupBase<OptionType>>
+                                render={({ field }) => (
+                                    <Select
                                         value={symbols.find((s) => s.value === field.value) || null}
                                         onChange={(option) => field.onChange(option?.value || "")}
                                         options={symbols}
                                         isSearchable
                                         isClearable
                                         placeholder={t.selectCrypto}
+                                        formatOptionLabel={(option) => (
+                                            <div className="flex items-center gap-2">
+                                                <img
+                                                    src={option.icon}
+                                                    alt={option.label}
+                                                    className="w-5 h-5 rounded-full"
+                                                />
+                                                <span>{option.label}</span>
+                                            </div>
+                                        )}
                                         styles={{
                                             control: (base, state) => ({
                                                 ...base,
-                                                backgroundColor: "var(--color-background)",
+                                                backgroundColor: "var(--color-background)", // темний фон
                                                 borderColor: state.isFocused
                                                     ? "var(--color-brand)"
-                                                    : "var(--color-border)",
-                                                color: "var(--color-text)",
-                                                boxShadow: "none",
-                                                ":hover": {borderColor: "var(--color-brand)"},
+                                                    : "rgba(255,255,255,0.1)",
+                                                boxShadow: state.isFocused ? "0 0 0 1px var(--color-brand)" : "none",
+                                                borderRadius: "10px",
+                                                minHeight: "42px",
+                                                transition: "border-color 0.2s ease",
+                                                ":hover": {
+                                                    borderColor: "var(--color-brand)",
+                                                },
                                             }),
+
                                             menu: (base) => ({
                                                 ...base,
-                                                backgroundColor: "var(--color-card)",
+                                                backgroundColor: "var(--color-card)", // темно-синій фон списку
+                                                borderRadius: "10px",
+                                                overflow: "hidden",
+                                                border: "1px solid rgba(255,255,255,0.08)",
                                                 zIndex: 9999,
                                             }),
+
+                                            option: (base, state) => ({
+                                                ...base,
+                                                backgroundColor: state.isSelected
+                                                    ? "var(--color-brand)" // синій коли вибрано
+                                                    : state.isFocused
+                                                        ? "rgba(80, 110, 255, 0.15)" // hover з легким підсвічуванням
+                                                        : "transparent",
+                                                color: state.isSelected ? "#fff" : "var(--color-text)",
+                                                cursor: "pointer",
+                                                padding: "8px 12px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "8px",
+                                            }),
+
                                             singleValue: (base) => ({
                                                 ...base,
                                                 color: "var(--color-text)",
                                             }),
+
                                             input: (base) => ({
                                                 ...base,
                                                 color: "var(--color-text)",
                                             }),
+
                                             placeholder: (base) => ({
                                                 ...base,
                                                 color: "var(--color-muted)",
                                             }),
+
+                                            dropdownIndicator: (base, state) => ({
+                                                ...base,
+                                                color: state.isFocused ? "var(--color-brand)" : "var(--color-muted)",
+                                                transition: "color 0.2s ease",
+                                                ":hover": { color: "var(--color-brand)" },
+                                            }),
+
                                             clearIndicator: (base) => ({
                                                 ...base,
-                                                color: "var(--color-text)",
-                                                ":hover": {color: "var(--color-error)"},
-                                                cursor: "pointer",
+                                                color: "var(--color-muted)",
+                                                ":hover": { color: "var(--color-error)" },
                                             }),
                                         }}
+
                                     />
                                 )}
                             />
