@@ -6,3 +6,4 @@ export * from './modals/SellModal';
 export * from './transactions/Filters';
 export * from './NavMenu';
 export * from './elements/Pagination';
+export * from './transactions/TransactionsStats';

@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 export default function FiltersBar({ filters, setFilters }: any) {
     return (
         <div
-            className="flex flex-wrap items-center gap-4 mb-6 rounded-xl p-4 border transition-all duration-300"
+            className="flex flex-wrap items-center gap-4 mb-3 rounded-xl p-4 border transition-all duration-300"
             style={{
                 backgroundColor: "var(--color-card)",
                 borderColor: "var(--color-border)",

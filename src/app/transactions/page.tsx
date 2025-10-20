@@ -5,6 +5,10 @@ import TransactionsTable from "@/components/transactions/Table";
 import FiltersBar from "@/components/transactions/Filters";
 import Pagination from "@/components/elements/Pagination";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
+import TransactionsStats from "@/components/transactions/TransactionsStats";
 
 interface Transaction {
     id: number;
@@ -16,6 +20,16 @@ interface Transaction {
     date: string;
 }
 
+interface Stats {
+    totalBuy: number;
+    totalSell: number;
+    count: number;
+    net: number;
+    avgSize: number;
+    avgBuy: number;
+    avgSell: number;
+}
+
 interface Meta {
     total: number;
     totalPages: number;
@@ -25,11 +39,15 @@ interface Meta {
     order: string;
     dateFrom?: string;
     dateTo?: string;
+    stats?: Stats;
 }
 
 export default function TransactionsPage() {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     const [filters, setFilters] = useState({
         symbol: "",
@@ -38,7 +56,7 @@ export default function TransactionsPage() {
         order: "desc",
         search: "",
         page: 1,
-        limit: 10,
+        limit: 8,
         dateFrom: "",
         dateTo: "",
     });
@@ -47,7 +65,7 @@ export default function TransactionsPage() {
         total: 0,
         totalPages: 1,
         page: 1,
-        limit: 10,
+        limit: 8,
         sortBy: "date",
         order: "desc",
     });
@@ -79,30 +97,37 @@ export default function TransactionsPage() {
 
     return (
         <div
-            className="flex flex-col"
+            className="fixed inset-0 flex flex-col"
             style={{
                 backgroundColor: "var(--color-background)",
                 color: "var(--color-text)",
+                top: "64px",
             }}
         >
-            {/* 🔹 Верхня частина (заголовок + фільтри) */}
+            {/* 🔹 Верхня частина (заголовок + фільтри + статистика) */}
             <div
-                className="flex-shrink-0 sticky top-0 z-30 px-4 py-3 border-b"
+                className="flex-shrink-0 border-b"
                 style={{
                     backgroundColor: "var(--color-background)",
                     borderColor: "var(--color-border)",
                 }}
             >
-                <h1 className="text-lg font-semibold mb-2">Transactions</h1>
-                <FiltersBar filters={filters} setFilters={setFilters} />
+                <div className="px-4 py-1 border-b border-[var(--color-border)]">
+                    <h1 className="text-lg font-semibold mb-2">{t.transactions}</h1>
+                    <FiltersBar filters={filters} setFilters={setFilters} />
+                </div>
+
+                <div className="py-3">
+                    <TransactionsStats stats={meta.stats} loading={loading} />
+                </div>
             </div>
 
-            {/* 🔹 Центральна частина (скролювана таблиця) */}
+            {/* 🔹 Центральна частина — тільки вона скролиться */}
             <div
                 className="flex-grow px-4 py-2"
                 style={{
                     scrollbarWidth: "thin",
-                    maxHeight: "calc(100vh - 200px)", // автоматично враховує висоту верхнього + нижнього блоків
+                    backgroundColor: "var(--color-background)",
                 }}
             >
                 {loading ? (
@@ -118,19 +143,21 @@ export default function TransactionsPage() {
                 )}
             </div>
 
-            {/* 🔹 Нижня частина (пагінація прижата до низу viewport) */}
+            {/* 🔹 Нижня частина (фіксована пагінація) */}
             <div
-                className="flex-shrink-0 fixed bottom-0 left-0 right-0 z-40 flex justify-center border-t"
+                className="flex-shrink-0 border-t"
                 style={{
                     backgroundColor: "var(--color-background)",
                     borderColor: "var(--color-border)",
                 }}
             >
-                <Pagination
-                    limit={filters.limit}
-                    totalItems={meta.total}
-                    onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
-                />
+                <div className="flex justify-center py-2">
+                    <Pagination
+                        limit={filters.limit}
+                        totalItems={meta.total}
+                        onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
+                    />
+                </div>
             </div>
         </div>
     );

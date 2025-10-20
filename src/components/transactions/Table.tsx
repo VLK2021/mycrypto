@@ -1,10 +1,17 @@
 "use client";
 
 import { ArrowUp, ArrowDown } from "lucide-react";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 
 export default function TransactionsTable({ transactions, filters, setFilters }: any) {
     const sortableFields = ["date", "price", "amount", "total"];
+
+    const {lang} = useLanguage();
+    const t = lang ==="uk" ? uk : en;
+
 
     const handleSort = (field: string) => {
         const isAsc = filters.sortBy === field && filters.order === "asc";
@@ -38,12 +45,12 @@ export default function TransactionsTable({ transactions, filters, setFilters }:
                     }}
                 >
                     {[
-                        { key: "date", label: "Date" },
-                        { key: "symbol", label: "Symbol" },
-                        { key: "price", label: "Price" },
-                        { key: "amount", label: "Amount" },
-                        { key: "total", label: "Total" },
-                        { key: "type", label: "Type" },
+                        { key: "date", label: t.date || "Date" },
+                        { key: "symbol", label: t.symbol || "Symbol" },
+                        { key: "price", label: t.price || "Price" },
+                        { key: "amount", label: t.amount || "Amount" },
+                        { key: "total", label: t.total || "Total" },
+                        { key: "type", label: t.type || "Type" },
                     ].map((col) => (
                         <th
                             key={col.key}

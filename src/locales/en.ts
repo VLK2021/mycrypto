@@ -9,7 +9,15 @@ export default {
     date: "Purchase Date",
     amount: "Amount",
     confirm: "Confirm Purchase",
-
+    transactions: "Transactions",
+    type: "Type",
+    total: "Total",
+    symbol: "Symbol",
+    totalBuy: "Total Buy",
+    totalSell: "Total Sell",
+    avgBuy: "Avg Buy",
+    avgSell: "Avg Sell",
+    netFlow: "Net Flow",
 
     home: "Dashboard",
     trades: "Trades",
