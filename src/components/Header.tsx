@@ -8,6 +8,7 @@ import en from "@/locales/en";
 import {useState} from "react";
 import BayModal from "@/components/modals/BayModal";
 import SellModal from "@/components/modals/SellModal";
+import NavMenu from "@/components/NavMenu";
 
 export default function Header() {
     const [isBuyOpen, setBuyOpen] = useState(false);
@@ -67,6 +68,7 @@ export default function Header() {
             </div>
 
             <div className="basis-[30%] flex justify-end items-center gap-3 min-w-[150px]">
+                <NavMenu/>
                 <LangSwitcher />
                 <ThemeSwitcher />
             </div>
