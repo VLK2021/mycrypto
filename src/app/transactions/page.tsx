@@ -112,7 +112,7 @@ export default function TransactionsPage() {
                     borderColor: "var(--color-border)",
                 }}
             >
-                <div className="px-4 py-1 border-b border-[var(--color-border)]">
+                <div className="px-4 py-2 border-b border-[var(--color-border)]">
                     <h1 className="text-lg font-semibold mb-2">{t.transactions}</h1>
                     <FiltersBar filters={filters} setFilters={setFilters} />
                 </div>

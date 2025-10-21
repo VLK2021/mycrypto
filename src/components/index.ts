@@ -7,3 +7,5 @@ export * from './transactions/Filters';
 export * from './NavMenu';
 export * from './elements/Pagination';
 export * from './transactions/TransactionsStats';
+export * from './dashboard/TopStats';
+export * from './dashboard/BalanceCharts';
