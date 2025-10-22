@@ -3,6 +3,8 @@
 import React from "react";
 import {usePortfolioData} from "@/hooks/usePortfolioData";
 import {PieChart, Pie, Cell, ResponsiveContainer, Tooltip} from "recharts";
+import * as d3 from "d3-scale-chromatic";
+
 
 export function CircleChart() {
     const {portfolio, loading} = usePortfolioData();
@@ -23,10 +25,9 @@ export function CircleChart() {
         );
     }
 
-    const COLORS = [
-        "#22c55e", "#3b82f6", "#f59e0b", "#ef4444", "#8b5cf6", "#06b6d4",
-        "#84cc16", "#ec4899", "#14b8a6", "#f97316", "#a855f7", "#0ea5e9"
-    ];
+    const COLORS = portfolio.map((_, i) =>
+        d3.interpolateRainbow(i / portfolio.length)
+    );
 
     // 🧮 Дані для графіка (відсортовані по відсотку — від більшого до меншого)
     const chartData = portfolio
