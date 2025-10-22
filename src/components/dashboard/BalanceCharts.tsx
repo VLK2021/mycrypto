@@ -2,6 +2,7 @@
 
 import React from "react";
 import CardContainer from "@/components/elements/CardContainer";
+import {CircleChart} from "@/components";
 
 
 export function BalanceCharts(props: any) {
@@ -23,10 +24,7 @@ export function BalanceCharts(props: any) {
             </CardContainer>
 
             <CardContainer className="h-[300px] w-[50%] flex flex-col items-center justify-center">
-                <div className="text-sm text-[var(--color-text-muted)] mb-2">Portfolio</div>
-                <div className="w-[180px] h-[180px] rounded-full bg-[var(--color-background-light)] flex items-center justify-center text-[var(--color-text-muted)]">
-                    Pie Chart
-                </div>
+                <CircleChart/>
             </CardContainer>
         </div>
     )

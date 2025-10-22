@@ -9,3 +9,4 @@ export * from './elements/Pagination';
 export * from './transactions/TransactionsStats';
 export * from './dashboard/TopStats';
 export * from './dashboard/BalanceCharts';
+export * from './dashboard/CircleChart';
