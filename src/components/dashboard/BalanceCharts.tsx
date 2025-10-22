@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import CardContainer from "@/components/elements/CardContainer";
 import {CircleChart} from "@/components";
