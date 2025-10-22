@@ -10,3 +10,5 @@ export * from './transactions/TransactionsStats';
 export * from './dashboard/TopStats';
 export * from './dashboard/BalanceCharts';
 export * from './dashboard/CircleChart';
+export * from './dashboard/TotalBalance';
+export * from './dashboard/TotalInvested';
