@@ -15,3 +15,5 @@ export * from './dashboard/TotalInvested';
 export * from './dashboard/RealPnl';
 export * from './dashboard/PortfolioStructure';
 export * from './dashboard/PortfolioExposure';
+export * from './dashboard/InfoSectionBlocks';
+export * from './dashboard/MyCoinsList';
