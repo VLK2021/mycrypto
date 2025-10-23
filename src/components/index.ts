@@ -12,3 +12,5 @@ export * from './dashboard/BalanceCharts';
 export * from './dashboard/CircleChart';
 export * from './dashboard/TotalBalance';
 export * from './dashboard/TotalInvested';
+export * from './dashboard/RealPnl';
+export * from './dashboard/PortfolioStructure';

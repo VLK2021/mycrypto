@@ -15,7 +15,7 @@ export default function CardContainer({ children, className = "" }: CardContaine
         border border-[var(--color-border)]
         rounded-xl
         shadow-soft
-        p-4 md:p-6
+        p-2 md:p-4
         transition-theme
         ${className}
       `}
