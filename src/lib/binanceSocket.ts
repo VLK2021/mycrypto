@@ -37,7 +37,7 @@ export function useBinancePrices(symbols: string[]) {
             }));
         };
 
-        ws.onerror = (err) => console.error("WebSocket error:", err);
+        ws.onerror = () => {}; // просто ігнор
         ws.onclose = () => console.log("🔌 Binance socket closed");
 
         return () => {

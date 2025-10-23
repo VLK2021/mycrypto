@@ -2,7 +2,7 @@
 
 import React from "react";
 import CardContainer from "@/components/elements/CardContainer";
-import {PortfolioStructure, RealPnl, TotalBalance, TotalInvested} from "@/components";
+import {PortfolioExposure, PortfolioStructure, RealPnl, TotalBalance, TotalInvested} from "@/components";
 
 
 export function TopStats() {
@@ -25,8 +25,7 @@ export function TopStats() {
             </CardContainer>
 
             <CardContainer>
-                <div className="text-sm text-[var(--color-text-muted)]">Coins</div>
-                <div className="text-2xl font-semibold mt-1">0</div>
+                <PortfolioExposure/>
             </CardContainer>
         </div>
     );

@@ -14,3 +14,4 @@ export * from './dashboard/TotalBalance';
 export * from './dashboard/TotalInvested';
 export * from './dashboard/RealPnl';
 export * from './dashboard/PortfolioStructure';
+export * from './dashboard/PortfolioExposure';
