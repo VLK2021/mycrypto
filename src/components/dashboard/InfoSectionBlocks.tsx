@@ -1,6 +1,8 @@
 import CardContainer from "@/components/elements/CardContainer";
 import React from "react";
 import {MyCoinsList} from "@/components";
+import FearGreed from "@/components/dashboard/FearGreed";
+import MarketMetrics from "@/components/dashboard/MarketMetrics";
 
 
 export function InfoSectionBlocks(){
@@ -11,13 +13,11 @@ export function InfoSectionBlocks(){
             </CardContainer>
 
             <CardContainer>
-                <div className="text-sm text-[var(--color-text-muted)] mb-3">Recent Transactions</div>
-                <div className="text-[var(--color-text-muted)] text-sm">Transactions Placeholder</div>
+                <FearGreed/>
             </CardContainer>
 
             <CardContainer>
-                <div className="text-sm text-[var(--color-text-muted)] mb-3">Portfolio Metrics</div>
-                <div className="text-[var(--color-text-muted)] text-sm">Metrics Placeholder</div>
+                <MarketMetrics/>
             </CardContainer>
         </div>
     )

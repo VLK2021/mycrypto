@@ -17,3 +17,5 @@ export * from './dashboard/PortfolioStructure';
 export * from './dashboard/PortfolioExposure';
 export * from './dashboard/InfoSectionBlocks';
 export * from './dashboard/MyCoinsList';
+export * from './dashboard/FearGreed';
+export * from './dashboard/MarketMetrics';

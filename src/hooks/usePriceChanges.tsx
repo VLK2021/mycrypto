@@ -58,7 +58,7 @@ export function usePriceChanges(symbols: string[]) {
         }
 
         fetchChanges();
-        const interval = setInterval(fetchChanges, 60_000);
+        const interval = setInterval(fetchChanges, 30_000);
 
         return () => {
             cancelled = true;
