@@ -1,5 +1,6 @@
-import CardContainer from "@/components/elements/CardContainer";
 import React from "react";
+
+import CardContainer from "@/components/elements/CardContainer";
 import {MyCoinsList} from "@/components";
 import FearGreed from "@/components/dashboard/FearGreed";
 import MarketMetrics from "@/components/dashboard/MarketMetrics";
