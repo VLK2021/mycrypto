@@ -6,6 +6,7 @@ export default {
     sellCrypto: "Sell Crypto",
     selectCrypto: "Select Crypto",
     price: "Price",
+    avgPrice: "Average Price",
     date: "Purchase Date",
     amount: "Amount",
     confirm: "Confirm Purchase",

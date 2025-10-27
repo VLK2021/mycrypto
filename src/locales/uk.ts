@@ -6,6 +6,7 @@ export default {
     sellCrypto: "Продати криптовалюту",
     selectCrypto: "Вибрати тікет",
     price: "Ціна",
+    avgPrice: "Середня ціна купівлі",
     date: "Дата",
     amount: "Кількість",
     confirm: "Зберегти",

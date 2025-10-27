@@ -19,6 +19,15 @@ model Transaction {
   createdAt DateTime @default(now())
 }
 
+model ManualAveragePrice {
+  id        Int      @id @default(autoincrement())
+  symbol    String   @unique
+  price     Decimal
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model PortfolioSnapshot {
   id         Int      @id @default(autoincrement())
   date       DateTime @default(now()) // коли зроблено знімок портфеля

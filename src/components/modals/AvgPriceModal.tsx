@@ -1,0 +1,255 @@
+"use client";
+
+import {useEffect, useState} from "react";
+import {useForm, Controller} from "react-hook-form";
+import {X} from "lucide-react";
+import Select from "react-select";
+
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
+
+
+interface AvgPriceProps {
+    setIsAvgPriceOpen: (open: boolean) => void;
+}
+
+interface BuyFormData {
+    symbol: string;
+    price: number;
+    date: string;
+}
+
+interface OptionType {
+    label: string;
+    value: string;
+    icon: string;
+}
+
+
+export default function AvgPriceModal({setIsAvgPriceOpen}: AvgPriceProps) {
+    const {control, register, handleSubmit, reset} = useForm<BuyFormData>({
+        defaultValues: {
+            symbol: "",
+            price: 0,
+            date: new Date().toISOString().split("T")[0], // поточна дата за замовчуванням
+        },
+    });
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
+    const [symbols, setSymbols] = useState<OptionType[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchSymbols = async () => {
+            try {
+                const res = await fetch("/api/binance/symbols");
+                const data = await res.json();
+                setSymbols(data);
+            } catch (err) {
+                console.error("Error fetching symbols:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchSymbols();
+    }, []);
+
+    const onSubmit = async (data: BuyFormData) => {
+        try {
+            const res = await fetch("/api/manual-average-price", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) throw new Error("Failed to save transaction");
+            const result = await res.json();
+            console.log("✅ Saved AVG price:", result);
+
+            reset();
+            setIsAvgPriceOpen(false);
+        } catch (err) {
+            console.error("Error:", err);
+        }
+    };
+
+
+    return (
+        <>
+            <div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                onClick={() => setIsAvgPriceOpen(false)}
+            />
+
+            <div
+                className="
+          fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+          w-[90%] max-w-md
+          bg-[var(--color-card)] text-[var(--color-text)]
+          border border-[var(--color-border)]
+          rounded-2xl shadow-2xl p-6
+          transition-theme
+          animate-[fadeIn_0.25s_ease-out]
+        "
+            >
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold">{t.avgPrice}</h2>
+                    <button
+                        onClick={() => setIsAvgPriceOpen(false)}
+                        className="p-1 rounded hover:bg-[var(--color-border)]/30 transition"
+                    >
+                        <X size={20}/>
+                    </button>
+                </div>
+
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                    {/* Symbol */}
+                    <div>
+                        <label className="block text-sm mb-1">{t.selectCrypto}</label>
+                        {loading ? (
+                            <div className="text-sm text-[var(--color-muted)]">Loading...</div>
+                        ) : (
+                            <Controller
+                                name="symbol"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        value={symbols.find((s) => s.value === field.value) || null}
+                                        onChange={(option) => field.onChange(option?.value || "")}
+                                        options={symbols}
+                                        isSearchable
+                                        isClearable
+                                        placeholder={t.selectCrypto}
+                                        formatOptionLabel={(option) => (
+                                            <div className="flex items-center gap-2">
+                                                <img
+                                                    src={option.icon}
+                                                    alt={option.label}
+                                                    className="w-5 h-5 rounded-full"
+                                                />
+                                                <span>{option.label}</span>
+                                            </div>
+                                        )}
+                                        styles={{
+                                            control: (base, state) => ({
+                                                ...base,
+                                                backgroundColor: "var(--color-background)", // темний фон
+                                                borderColor: state.isFocused
+                                                    ? "var(--color-brand)"
+                                                    : "rgba(255,255,255,0.1)",
+                                                boxShadow: state.isFocused ? "0 0 0 1px var(--color-brand)" : "none",
+                                                borderRadius: "10px",
+                                                minHeight: "42px",
+                                                transition: "border-color 0.2s ease",
+                                                ":hover": {
+                                                    borderColor: "var(--color-brand)",
+                                                },
+                                            }),
+
+                                            menu: (base) => ({
+                                                ...base,
+                                                backgroundColor: "var(--color-card)", // темно-синій фон списку
+                                                borderRadius: "10px",
+                                                overflow: "hidden",
+                                                border: "1px solid rgba(255,255,255,0.08)",
+                                                zIndex: 9999,
+                                            }),
+
+                                            option: (base, state) => ({
+                                                ...base,
+                                                backgroundColor: state.isSelected
+                                                    ? "var(--color-brand)" // синій коли вибрано
+                                                    : state.isFocused
+                                                        ? "rgba(80, 110, 255, 0.15)" // hover з легким підсвічуванням
+                                                        : "transparent",
+                                                color: state.isSelected ? "#fff" : "var(--color-text)",
+                                                cursor: "pointer",
+                                                padding: "8px 12px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "8px",
+                                            }),
+
+                                            singleValue: (base) => ({
+                                                ...base,
+                                                color: "var(--color-text)",
+                                            }),
+
+                                            input: (base) => ({
+                                                ...base,
+                                                color: "var(--color-text)",
+                                            }),
+
+                                            placeholder: (base) => ({
+                                                ...base,
+                                                color: "var(--color-muted)",
+                                            }),
+
+                                            dropdownIndicator: (base, state) => ({
+                                                ...base,
+                                                color: state.isFocused ? "var(--color-brand)" : "var(--color-muted)",
+                                                transition: "color 0.2s ease",
+                                                ":hover": { color: "var(--color-brand)" },
+                                            }),
+
+                                            clearIndicator: (base) => ({
+                                                ...base,
+                                                color: "var(--color-muted)",
+                                                ":hover": { color: "var(--color-error)" },
+                                            }),
+                                        }}
+
+                                    />
+                                )}
+                            />
+                        )}
+                    </div>
+
+                    {/* Price */}
+                    <div>
+                        <label className="block text-sm mb-1">{t.price} (USD)</label>
+                        <input
+                            type="number"
+                            step="any"
+                            {...register("price", {required: true})}
+                            placeholder="Enter price"
+                            className="
+                w-full p-2 rounded-lg border border-[var(--color-border)]
+                bg-[var(--color-background)] outline-none
+                focus:ring-2 focus:ring-[var(--color-brand)]
+              "
+                        />
+                    </div>
+
+                    {/* Date */}
+                    <div>
+                        <label className="block text-sm mb-1">{t.date}</label>
+                        <input
+                            type="date"
+                            {...register("date", {required: true})}
+                            className="
+                w-full p-2 rounded-lg border border-[var(--color-border)]
+                bg-[var(--color-background)] outline-none
+                focus:ring-2 focus:ring-[var(--color-brand)]
+              "
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="
+              mt-2 py-2 rounded-lg font-semibold
+              bg-[var(--color-success)] text-white
+              hover:opacity-90 transition
+            "
+                    >
+                        {t.confirm}
+                    </button>
+                </form>
+            </div>
+        </>
+    );
+}
