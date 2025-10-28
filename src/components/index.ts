@@ -3,6 +3,7 @@ export * from './LangSwitcher';
 export * from './elements/CardContainer';
 export * from './modals/BayModal';
 export * from './modals/SellModal';
+export * from './modals/AvgPriceUpdateModal';
 export * from './modals/AvgPriceModal';
 export * from './transactions/Filters';
 export * from './NavMenu';

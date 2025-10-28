@@ -11,6 +11,7 @@ import AvgPriceModal from "@/components/modals/AvgPriceModal";
 import { useLanguage } from "@/context";
 import uk from "@/locales/uk";
 import en from "@/locales/en";
+import { button } from "framer-motion/client";
 
 export default function Header() {
     const [isBuyOpen, setBuyOpen] = useState(false);

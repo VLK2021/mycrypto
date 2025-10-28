@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
-
+import AvgPriceUpdateModal from "@/components/modals/AvgPriceUpdateModal";
 
 interface AvgItem {
     symbol: string;
@@ -17,21 +17,20 @@ interface CombinedItem extends AvgItem {
     status: "profit" | "loss" | "neutral";
 }
 
-
 type SortKey = "price" | "current" | "diffUsd" | "diffPercent";
 type SortOrder = "asc" | "desc";
 
-// 🔹 Форматування ціни — максимум 9 знаків після коми, без зайвих нулів
 function formatPrice(value: number): string {
     if (isNaN(value)) return "-";
     return value.toFixed(9).replace(/\.?0+$/, "");
 }
 
-
 export default function AveragePrice() {
     const [data, setData] = useState<CombinedItem[]>([]);
     const [sortKey, setSortKey] = useState<SortKey>("diffPercent");
     const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+    const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+    const [selectedSymbol, setSelectedSymbol] = useState<CombinedItem | null>(null);
     const wsRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
@@ -103,7 +102,6 @@ export default function AveragePrice() {
         };
     }, []);
 
-    // 🔹 Сортування
     const sortedData = [...data].sort((a, b) => {
         const valA = a[sortKey] ?? 0;
         const valB = b[sortKey] ?? 0;
@@ -117,6 +115,11 @@ export default function AveragePrice() {
             setSortKey(key);
             setSortOrder("desc");
         }
+    };
+
+    const handleOpenModal = (item: CombinedItem) => {
+        setSelectedSymbol(item);
+        setIsUpdateOpen(true);
     };
 
     if (!data.length)
@@ -175,22 +178,22 @@ export default function AveragePrice() {
                         key={item.symbol}
                         className="flex justify-between items-center px-3 py-2 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-border)]/10 transition-all duration-150"
                     >
-                        {/* Ticket */}
                         <div className="flex items-center gap-2 w-[15%] font-semibold">
                             {item.symbol}
                         </div>
 
-                        {/* Avg Price */}
-                        <div className="w-[20%] text-right text-sm opacity-80">
+                        {/* Avg Price (натискання відкриває модалку) */}
+                        <div
+                            className="w-[20%] text-right text-sm opacity-80 cursor-pointer hover:text-blue-400 transition"
+                            onClick={() => handleOpenModal(item)}
+                        >
                             {formatPrice(item.price)} $
                         </div>
 
-                        {/* Current */}
                         <div className="w-[20%] text-right text-sm font-medium">
                             {item.current ? formatPrice(item.current) : "-"} $
                         </div>
 
-                        {/* Δ USD */}
                         <div
                             className={`w-[15%] text-right text-sm font-semibold ${
                                 item.diffUsd > 0
@@ -204,7 +207,6 @@ export default function AveragePrice() {
                             {item.diffUsd.toFixed(2)}$
                         </div>
 
-                        {/* Δ % */}
                         <div
                             className={`w-[15%] text-right text-sm font-semibold ${
                                 item.diffPercent > 0
@@ -218,7 +220,6 @@ export default function AveragePrice() {
                             {item.diffPercent.toFixed(2)}%
                         </div>
 
-                        {/* Status */}
                         <div
                             className={`w-[10%] text-right font-bold tracking-wide ${
                                 item.status === "profit"
@@ -237,11 +238,21 @@ export default function AveragePrice() {
                     </div>
                 ))}
             </div>
+
+            {/* 🟣 Модалка оновлення */}
+            {isUpdateOpen && selectedSymbol && (
+                <AvgPriceUpdateModal
+                    setIsUpdateOpen={setIsUpdateOpen}
+                    symbol={selectedSymbol.symbol}
+                    currentPrice={selectedSymbol.price}
+                    currentDate={selectedSymbol.date}
+                />
+            )}
         </div>
     );
 }
 
-// 🔹 Хедер із сортуванням
+// 🔹 Хедер
 function HeaderCell({
                         label,
                         sortKey,
@@ -279,3 +290,4 @@ function HeaderCell({
         </div>
     );
 }
+
