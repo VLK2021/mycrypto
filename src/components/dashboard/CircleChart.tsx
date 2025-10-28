@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import {usePortfolioData} from "@/hooks/usePortfolioData";
 import {PieChart, Pie, Cell, ResponsiveContainer, Tooltip} from "recharts";
 import * as d3 from "d3-scale-chromatic";
+
+import {usePortfolioData} from "@/hooks/usePortfolioData";
 
 
 export function CircleChart() {

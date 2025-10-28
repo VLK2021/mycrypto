@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
+
 interface AvgItem {
     symbol: string;
     price: number;
@@ -16,6 +17,7 @@ interface CombinedItem extends AvgItem {
     status: "profit" | "loss" | "neutral";
 }
 
+
 type SortKey = "price" | "current" | "diffUsd" | "diffPercent";
 type SortOrder = "asc" | "desc";
 
@@ -24,6 +26,7 @@ function formatPrice(value: number): string {
     if (isNaN(value)) return "-";
     return value.toFixed(9).replace(/\.?0+$/, "");
 }
+
 
 export default function AveragePrice() {
     const [data, setData] = useState<CombinedItem[]>([]);
