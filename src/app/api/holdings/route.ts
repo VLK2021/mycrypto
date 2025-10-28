@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
 
-const prisma = new PrismaClient();
+import {prisma} from "@/lib/prisma";
+
 
 export async function GET() {
     try {
-        // Групуємо всі транзакції за символом
+        // Отримуємо всі транзакції (символ, тип, кількість)
         const transactions = await prisma.transaction.findMany({
             select: {
                 symbol: true,
@@ -14,7 +14,7 @@ export async function GET() {
             },
         });
 
-        // Агрегуємо вручну — враховуємо продажі як мінус
+        // Агрегуємо вручну — продажі вважаємо від’ємними
         const holdings: Record<string, number> = {};
 
         for (const tx of transactions) {
@@ -23,7 +23,7 @@ export async function GET() {
             holdings[symbol] += type === "BUY" ? amount : -amount;
         }
 
-        // Формуємо фінальний масив, фільтруючи монети з нульовим або від’ємним балансом
+        // Формуємо фінальний масив, фільтруючи монети з позитивним балансом
         const data = Object.entries(holdings)
             .filter(([_, amount]) => amount > 0)
             .map(([symbol, amount]) => ({
@@ -31,7 +31,7 @@ export async function GET() {
                 amount,
             }));
 
-        return NextResponse.json({ data });
+        return NextResponse.json({ data }, { status: 200 });
     } catch (error) {
         console.error("❌ Error fetching holdings:", error);
         return NextResponse.json(
