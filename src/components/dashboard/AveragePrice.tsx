@@ -87,7 +87,7 @@ export default function AveragePrice() {
                 ws.onerror = (err) => console.error("WebSocket error:", err);
                 ws.onclose = () => {
                     console.warn("WebSocket closed, reconnecting...");
-                    setTimeout(() => init(), 2000);
+                    setTimeout(() => init(), 1000);
                 };
             } catch (err) {
                 console.error("Init error:", err);
