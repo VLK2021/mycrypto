@@ -1,0 +1,12 @@
+-- CreateTable
+CREATE TABLE "PortfolioSnapshot" (
+    "id" SERIAL NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "totalValue" DOUBLE PRECISION NOT NULL,
+    "totalPnL" DOUBLE PRECISION NOT NULL,
+    "pnlPercent" DOUBLE PRECISION NOT NULL,
+    "data" JSONB NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "PortfolioSnapshot_pkey" PRIMARY KEY ("id")
+);

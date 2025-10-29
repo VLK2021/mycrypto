@@ -19,6 +19,8 @@ export default {
     avgBuy: "Усереднена покупка",
     avgSell: "Усереднена продажа",
     netFlow: "Залишок",
+    totalBalance: "Поточний баланс",
+    totalInvested: "Інвестовано",
 
     home: "Головна",
     trades: "Угоди",

@@ -2,10 +2,16 @@
 
 import React from "react";
 import {usePortfolioWithCategories} from "@/hooks";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 
 export function PortfolioStructure() {
     const {portfolio, loading} = usePortfolioWithCategories();
+
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     if (loading) {
         return (

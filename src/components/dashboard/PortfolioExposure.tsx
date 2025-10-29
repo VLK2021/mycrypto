@@ -3,11 +3,17 @@
 import React from "react";
 import { usePortfolioWithCategories } from "@/hooks/usePortfolioWithCategories";
 import { usePortfolioExposure } from "@/hooks/usePortfolioExposure";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 
 export function PortfolioExposure() {
     const { portfolio, loading } = usePortfolioWithCategories();
     const { exposure, topHighRisk } = usePortfolioExposure(portfolio, loading);
+
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     if (loading) {
         return (

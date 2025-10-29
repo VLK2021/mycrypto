@@ -1,10 +1,17 @@
 "use client";
 import React from "react";
+
 import { useRealPnL } from "@/hooks/useRealPnL";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 
 export function RealPnl() {
     const { pnl, pnlPercent, loading } = useRealPnL();
+
+    const { lang } = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     const isPositive = pnl >= 0;
     const pnlColor = isPositive ? "text-green-500" : "text-red-500";

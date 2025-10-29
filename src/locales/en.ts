@@ -19,6 +19,8 @@ export default {
     avgBuy: "Avg Buy",
     avgSell: "Avg Sell",
     netFlow: "Net Flow",
+    totalBalance: "Total Balance",
+    totalInvested: "Total Invested",
 
     home: "Dashboard",
     trades: "Trades",
