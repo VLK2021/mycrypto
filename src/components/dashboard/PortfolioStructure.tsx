@@ -41,7 +41,7 @@ export function PortfolioStructure() {
     return (
         <div className="w-full flex flex-col justify-center h-full">
             <div className="text-sm text-[var(--color-text-muted)] mb-1">
-                Portfolio Structure
+                {t.portfolioStructure}
             </div>
 
             {/* 🔹 Основна інформація в 1 рядок */}

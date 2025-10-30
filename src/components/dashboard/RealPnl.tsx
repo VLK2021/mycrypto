@@ -19,7 +19,7 @@ export function RealPnl() {
 
     return (
         <div className="w-full">
-            <div className="text-sm text-[var(--color-text-muted)]">Real-Time PnL</div>
+            <div className="text-sm text-[var(--color-text-muted)]">{t.realPnl}</div>
             {loading ? (
                 <div className="text-[var(--color-text-muted)] mt-1">Loading...</div>
             ) : (

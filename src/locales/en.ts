@@ -1,3 +1,5 @@
+import {RealPnl} from "@/components";
+
 export default {
     logo: "MyCrypto",
     buy: "buy",
@@ -21,6 +23,8 @@ export default {
     netFlow: "Net Flow",
     totalBalance: "Total Balance",
     totalInvested: "Total Invested",
+    realPnl: "Real Pnl",
+    portfolioStructure: "Portfolio Structure",
 
     home: "Dashboard",
     trades: "Trades",

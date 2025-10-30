@@ -21,6 +21,8 @@ export default {
     netFlow: "Залишок",
     totalBalance: "Поточний баланс",
     totalInvested: "Інвестовано",
+    realPnl: "Реальний Pnl",
+    portfolioStructure: "Структура портфелю",
 
     home: "Головна",
     trades: "Угоди",
