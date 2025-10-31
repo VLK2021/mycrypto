@@ -27,6 +27,7 @@ export default {
     portfolioAllocation: "Диверсифікація",
     status: "Статус",
     fearGreedIndex: "Індекс страху та жадібності",
+    globalCryptoOverview: "Огляд глобального крипторинку",
 
     home: "Головна",
     trades: "Угоди",

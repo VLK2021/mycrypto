@@ -1,6 +1,9 @@
 "use client";
 import {JSX, useEffect, useState} from "react";
 import { TrendingUp, TrendingDown, DollarSign, Coins, PieChart, BarChart3 } from "lucide-react";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 interface MetricsData {
     totalMarketCapUsd: number;
@@ -16,6 +19,9 @@ interface MetricsData {
 
 export default function MarketMetrics() {
     const [metrics, setMetrics] = useState<MetricsData | null>(null);
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     useEffect(() => {
         fetch("/api/metrics")
@@ -38,7 +44,7 @@ export default function MarketMetrics() {
             {/* fixed header */}
             <div className="sticky top-0 z-10 px-4 py-2 border-b border-border bg-secondary flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-foreground tracking-wide uppercase">
-                    Global Crypto Overview
+                    {t.globalCryptoOverview}
                 </h3>
                 <span className="text-xs text-muted-foreground">
           Updated {new Date(metrics.updatedAt).toLocaleTimeString()}
@@ -117,7 +123,6 @@ export default function MarketMetrics() {
                         icon={<PieChart className="text-emerald-400" size={18} />}
                         description="Total market share of all altcoins"
                     />
-
                 </div>
 
             </div>

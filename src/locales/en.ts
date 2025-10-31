@@ -29,6 +29,7 @@ export default {
     portfolioAllocation: "Portfolio Allocation",
     status: "Status",
     fearGreedIndex: "Fear & Greed Index",
+    globalCryptoOverview: "Global Crypto Overview",
 
     home: "Dashboard",
     trades: "Trades",
