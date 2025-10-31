@@ -5,10 +5,17 @@ import {PieChart, Pie, Cell, ResponsiveContainer, Tooltip} from "recharts";
 import * as d3 from "d3-scale-chromatic";
 
 import {usePortfolioData} from "@/hooks/usePortfolioData";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 
 export function CircleChart() {
     const {portfolio, loading} = usePortfolioData();
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
+
 
     if (loading) {
         return (
@@ -44,7 +51,7 @@ export function CircleChart() {
             {/* 🔹 Ліва частина: монети у два стовпчики */}
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs w-full md:w-1/2">
                 <div className="col-span-2 text-[var(--color-text-muted)] text-[19px] mb-6 font-bold uppercase">
-                    Portfolio Allocation
+                    {t.portfolioAllocation}
                 </div>
                 {chartData.map((coin, index) => (
                     <div key={coin.name} className="flex flex-col">

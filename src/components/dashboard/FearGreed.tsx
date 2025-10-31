@@ -2,6 +2,9 @@
 
 import React, {useEffect, useState} from "react";
 import {motion} from "framer-motion";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 interface FearGreedData {
     value: number;
@@ -13,6 +16,9 @@ interface FearGreedData {
 export default function FearGreed() {
     const [data, setData] = useState<FearGreedData | null>(null);
     const [loading, setLoading] = useState(true);
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     useEffect(() => {
         async function fetchData() {
@@ -72,7 +78,7 @@ export default function FearGreed() {
             {/* Header */}
             <div className="p-3 border-b border-[var(--color-border)] sticky top-0 z-10">
                 <div className="text-sm text-[var(--color-text-muted)] font-semibold">
-                    Fear & Greed Index
+                    {t.fearGreedIndex}
                 </div>
             </div>
 
@@ -147,9 +153,7 @@ export default function FearGreed() {
                     <div className="text-sm text-[var(--color-text-muted)]">
                         {data.classification}
                     </div>
-                    <div className={`text-xs ${diffColor}`}>
-                        {diff > 0 ? "▲" : diff < 0 ? "▼" : "–"} {Math.abs(diff)} pts від учора
-                    </div>
+
                     <div className="text-xs text-[var(--color-text-muted)] mt-[2px]">
                         Середнє значення за 7 днів: {data.average7d.toFixed(1)}
                     </div>

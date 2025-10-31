@@ -26,6 +26,9 @@ export default {
     realPnl: "Real Pnl",
     portfolioStructure: "Portfolio Structure",
     exposure: "Exposure",
+    portfolioAllocation: "Portfolio Allocation",
+    status: "Status",
+    fearGreedIndex: "Fear & Greed Index",
 
     home: "Dashboard",
     trades: "Trades",

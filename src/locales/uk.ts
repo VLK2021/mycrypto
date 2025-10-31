@@ -6,7 +6,7 @@ export default {
     sellCrypto: "Продати криптовалюту",
     selectCrypto: "Вибрати тікет",
     price: "Ціна",
-    avgPrice: "Середня ціна купівлі",
+    avgPrice: "Середня ціна",
     date: "Дата",
     amount: "Кількість",
     confirm: "Зберегти",
@@ -24,6 +24,9 @@ export default {
     realPnl: "Реальний Pnl",
     portfolioStructure: "Структура портфелю",
     exposure: "Ринковий ризик",
+    portfolioAllocation: "Диверсифікація",
+    status: "Статус",
+    fearGreedIndex: "Індекс страху та жадібності",
 
     home: "Головна",
     trades: "Угоди",

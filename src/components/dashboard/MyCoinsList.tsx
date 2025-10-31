@@ -5,6 +5,9 @@ import {ChevronUp, ChevronDown} from "lucide-react";
 
 import {usePortfolioData} from "@/hooks/usePortfolioData";
 import {usePriceChanges} from "@/hooks/usePriceChanges";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 
 export function MyCoinsList() {
@@ -12,6 +15,9 @@ export function MyCoinsList() {
 
     const symbols = portfolio.map((coin) => `${coin.symbol.toUpperCase()}USDT`);
     const changes = usePriceChanges(symbols);
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     // 🔹 Стан сортування
     const [sortBy, setSortBy] = useState<"price" | "change" | null>(null);
@@ -65,7 +71,7 @@ export function MyCoinsList() {
             <div
                 className="flex items-center justify-between p-3 border-b border-[var(--color-border)] bg-[var(--color-card)] sticky top-0 z-10">
                 <div className="text-sm text-[var(--color-text-muted)] font-semibold">
-                    My Coins
+                    {t.symbol}
                 </div>
 
                 <div className="flex items-center gap-6">
@@ -74,7 +80,7 @@ export function MyCoinsList() {
                         onClick={() => toggleSort("price")}
                         className="flex mr-6 items-center gap-1 text-[var(--color-text-muted)] text-sm font-medium hover:text-[var(--color-text)] transition"
                     >
-                        Price
+                        {t.price}
                         <div className="flex flex-col ml-1">
                             <ChevronUp
                                 size={12}

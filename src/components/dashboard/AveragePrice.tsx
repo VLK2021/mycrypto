@@ -3,6 +3,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import AvgPriceUpdateModal from "@/components/modals/AvgPriceUpdateModal";
+import {useLanguage} from "@/context";
+import uk from "@/locales/uk";
+import en from "@/locales/en";
 
 interface AvgItem {
     symbol: string;
@@ -32,6 +35,9 @@ export default function AveragePrice() {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState<CombinedItem | null>(null);
     const wsRef = useRef<WebSocket | null>(null);
+
+    const {lang} = useLanguage();
+    const t = lang === "uk" ? uk : en;
 
     useEffect(() => {
         const init = async () => {
@@ -134,18 +140,18 @@ export default function AveragePrice() {
             {/* 🧭 Хедер */}
             <div className="sticky top-0 z-10 flex justify-between bg-[var(--color-card)] px-3 py-2 border-b border-[var(--color-border)] rounded-t-lg select-none">
                 <div className="w-[15%] text-left text-sm font-semibold opacity-70">
-                    Ticket
+                    {t.symbol}
                 </div>
 
                 <HeaderCell
-                    label="Avg Price"
+                    label={t.avgPrice}
                     sortKey="price"
                     activeKey={sortKey}
                     order={sortOrder}
                     onClick={toggleSort}
                 />
                 <HeaderCell
-                    label="Current"
+                    label={t.price}
                     sortKey="current"
                     activeKey={sortKey}
                     order={sortOrder}
@@ -167,7 +173,7 @@ export default function AveragePrice() {
                 />
 
                 <div className="w-[10%] text-right text-sm font-semibold opacity-70">
-                    Status
+                    {t.status}
                 </div>
             </div>
 
