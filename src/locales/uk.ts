@@ -23,6 +23,7 @@ export default {
     totalInvested: "Інвестовано",
     realPnl: "Реальний Pnl",
     portfolioStructure: "Структура портфелю",
+    exposure: "Ринковий ризик",
 
     home: "Головна",
     trades: "Угоди",

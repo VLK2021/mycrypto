@@ -25,6 +25,7 @@ export default {
     totalInvested: "Total Invested",
     realPnl: "Real Pnl",
     portfolioStructure: "Portfolio Structure",
+    exposure: "Exposure",
 
     home: "Dashboard",
     trades: "Trades",

@@ -35,7 +35,7 @@ export function PortfolioExposure() {
         <div className="w-full">
             {/* 🔹 Заголовок */}
             <div className="text-sm text-[var(--color-text-muted)] mb-1">
-                Exposure
+                {t.exposure}
             </div>
 
             {/* 🔹 Відсотки ризиків */}
