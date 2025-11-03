@@ -97,14 +97,13 @@ export default function TransactionsPage() {
 
     return (
         <div
-            className="fixed inset-0 flex flex-col"
+            className="flex flex-col min-h-[calc(100vh-64px)]"
             style={{
                 backgroundColor: "var(--color-background)",
                 color: "var(--color-text)",
-                top: "64px",
             }}
         >
-            {/* 🔹 Верхня частина (заголовок + фільтри + статистика) */}
+            {/* 🔹 Верхня частина (фільтри + статистика) */}
             <div
                 className="flex-shrink-0 border-b"
                 style={{
@@ -122,9 +121,9 @@ export default function TransactionsPage() {
                 </div>
             </div>
 
-            {/* 🔹 Центральна частина — тільки вона скролиться */}
+            {/* 🔹 Центральна частина (основний контент, який скролиться) */}
             <div
-                className="flex-grow px-4 py-2"
+                className="flex-grow overflow-y-auto px-4 py-2"
                 style={{
                     scrollbarWidth: "thin",
                     backgroundColor: "var(--color-background)",
@@ -162,3 +161,4 @@ export default function TransactionsPage() {
         </div>
     );
 }
+
