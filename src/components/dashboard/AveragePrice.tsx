@@ -40,6 +40,9 @@ export default function AveragePrice() {
     const t = lang === "uk" ? uk : en;
 
     useEffect(() => {
+        let ws: WebSocket | null = null;
+        let reconnectTimer: NodeJS.Timeout | null = null;
+
         const init = async () => {
             try {
                 const res = await fetch("/api/manual-average-price");
@@ -56,9 +59,7 @@ export default function AveragePrice() {
                     .map((x) => `${x.symbol.toLowerCase()}usdt@ticker`)
                     .join("/");
 
-                const ws = new WebSocket(
-                    `wss://stream.binance.com:9443/stream?streams=${streams}`
-                );
+                ws = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
                 wsRef.current = ws;
 
                 const initial = avgList.map((a) => ({
@@ -73,7 +74,7 @@ export default function AveragePrice() {
                 ws.onmessage = (event) => {
                     const message = JSON.parse(event.data);
                     const payload = message.data;
-                    if (!payload || !payload.s || !payload.c) return;
+                    if (!payload?.s || !payload?.c) return;
 
                     const symbol = payload.s.replace("USDT", "");
                     const current = parseFloat(payload.c);
@@ -92,21 +93,33 @@ export default function AveragePrice() {
                     );
                 };
 
-                ws.onerror = (err) => console.error("WebSocket error:", err);
+                ws.onerror = (err) => {
+                    console.warn("⚠️ WebSocket error:", err);
+                };
+
                 ws.onclose = () => {
-                    console.warn("WebSocket closed, reconnecting...");
-                    setTimeout(() => init(), 1000);
+                    console.log("🔌 WebSocket closed, reconnecting...");
+                    reconnectTimer = setTimeout(init, 2000);
                 };
             } catch (err) {
-                console.error("Init error:", err);
+                console.error("❌ Init error:", err);
             }
         };
 
         init();
+
+        // ✅ Очищення при розмонтуванні або зміні сторінки
         return () => {
-            if (wsRef.current) wsRef.current.close();
+            if (ws) {
+                ws.onclose = null;
+                ws.onerror = null;
+                ws.onmessage = null;
+                ws.close();
+            }
+            if (reconnectTimer) clearTimeout(reconnectTimer);
         };
     }, []);
+
 
     const sortedData = [...data].sort((a, b) => {
         const valA = a[sortKey] ?? 0;
