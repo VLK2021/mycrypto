@@ -10,6 +10,7 @@ import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import {usePortfolioWithCategories} from "@/hooks/usePortfolioWithCategories";
 import {usePriceChanges} from "@/hooks/usePriceChanges";
 
+
 interface PortfolioItem {
     symbol: string;
     name?: string;
@@ -34,6 +35,7 @@ type SortKey =
     | "percent"
     | "change24h";
 type SortOrder = "asc" | "desc";
+
 
 export default function PortfolioTable() {
     const {lang} = useLanguage();
@@ -182,17 +184,55 @@ export default function PortfolioTable() {
             {/* Header */}
             <div
                 className="sticky top-0 z-10 grid grid-cols-8 gap-2 px-4 py-2 border-b border-[var(--color-border)] bg-[var(--color-card)] text-sm font-semibold hidden md:grid">
-                <HeaderCell label="Coin" sortKey="symbol" activeKey={sortKey} order={sortOrder} onClick={toggleSort}/>
-                <HeaderCell label="Current Price" sortKey="current" activeKey={sortKey} order={sortOrder}
-                            onClick={toggleSort}/>
-                <HeaderCell label="24h %" sortKey="change24h" activeKey={sortKey} order={sortOrder}
-                            onClick={toggleSort}/>
-                <HeaderCell label="Avg Price" sortKey="avgPrice" activeKey={sortKey} order={sortOrder}
-                            onClick={toggleSort}/>
-                <HeaderCell label="Δ $" sortKey="diffUsd" activeKey={sortKey} order={sortOrder} onClick={toggleSort}/>
-                <HeaderCell label="Δ %" sortKey="diffPercent" activeKey={sortKey} order={sortOrder}
-                            onClick={toggleSort}/>
-                <HeaderCell label="Share" sortKey="percent" activeKey={sortKey} order={sortOrder} onClick={toggleSort}/>
+                <HeaderCell
+                    label={t.symbol}
+                    sortKey="symbol"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
+                <HeaderCell
+                    label={t.price}
+                    sortKey="current"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
+                <HeaderCell
+                    label="24h %"
+                    sortKey="change24h"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
+                <HeaderCell
+                    label={t.avgPrice}
+                    sortKey="avgPrice"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
+                <HeaderCell
+                    label="Δ $"
+                    sortKey="diffUsd"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
+                <HeaderCell
+                    label="Δ %"
+                    sortKey="diffPercent"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
+                <HeaderCell
+                    label="Share"
+                    sortKey="percent"
+                    activeKey={sortKey}
+                    order={sortOrder}
+                    onClick={toggleSort}
+                />
                 <div className="text-right opacity-70">Action</div>
             </div>
 
@@ -262,10 +302,28 @@ export default function PortfolioTable() {
                             </div>
 
 
+                            {/* Δ $ */}
                             <div className={`text-right text-sm font-semibold ${getColor(diffUsd)}`}>
-                                {diffUsd > 0 ? "+" : ""}
-                                {formatNum(diffUsd)}$
+                                <div>
+                                    {diffUsd > 0 ? "+" : ""}
+                                    {formatNum(diffUsd)}$
+                                </div>
+
+                                {/* 🔹 різниця загальної вартості (diffUsd * amount) */}
+                                <div
+                                    className={`text-xs mt-[1px] ${
+                                        diffUsd > 0
+                                            ? "text-green-400/70"
+                                            : diffUsd < 0
+                                                ? "text-red-400/70"
+                                                : "text-gray-400/70"
+                                    }`}
+                                >
+                                    {diffUsd > 0 ? "+" : ""}
+                                    {(diffUsd * item.amount).toFixed(2)}$
+                                </div>
                             </div>
+
 
                             <div className={`text-right text-sm font-semibold ${getColor(diffPercent)}`}>
                                 {diffPercent > 0 ? "+" : ""}
@@ -383,6 +441,7 @@ function HeaderCell({label, sortKey, activeKey, order, onClick}: any) {
     );
 }
 
+
 function getSortValue(item: PortfolioItem, key: SortKey, changes: Record<string, number>): number {
     switch (key) {
         case "current":
@@ -398,12 +457,15 @@ function getSortValue(item: PortfolioItem, key: SortKey, changes: Record<string,
     }
 }
 
+
 function getColor(value: number): string {
     return value > 0 ? "text-green-400" : value < 0 ? "text-red-400" : "text-gray-400";
 }
 
 const fullNames: Record<string, string> = {
     BTC: "Bitcoin",
+    OP: "Optimism",
+    LDO: "Lido Finance",
     ETH: "Ethereum",
     SOL: "Solana",
     XRP: "Ripple",
@@ -414,5 +476,5 @@ const fullNames: Record<string, string> = {
     BONK: "Bonk",
     JUP: "Jupiter",
     W: "Wormhole",
-    PUMP: "Pump Coin",
+    PUMP: "Pump.fun",
 };
