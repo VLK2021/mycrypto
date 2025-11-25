@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
-import { ChevronUp, ChevronDown, Trash2 } from "lucide-react";
-import { useLanguage } from "@/context";
+import React, {useState, useMemo, useEffect, useRef} from "react";
+import {ChevronUp, ChevronDown, Trash2} from "lucide-react";
+import {useLanguage} from "@/context";
 import uk from "@/locales/uk";
 import en from "@/locales/en";
 import AvgPriceUpdateModal from "@/components/modals/AvgPriceUpdateModal";
 import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
-import { usePortfolioWithCategories } from "@/hooks/usePortfolioWithCategories";
-import { usePriceChanges } from "@/hooks/usePriceChanges";
+import {usePortfolioWithCategories} from "@/hooks/usePortfolioWithCategories";
+import {usePriceChanges} from "@/hooks/usePriceChanges";
 
 interface PortfolioItem {
     symbol: string;
@@ -36,10 +36,10 @@ type SortKey =
 type SortOrder = "asc" | "desc";
 
 export default function PortfolioTable() {
-    const { lang } = useLanguage();
+    const {lang} = useLanguage();
     const t = lang === "uk" ? uk : en;
 
-    const { portfolio: basePortfolio, loading } = usePortfolioWithCategories();
+    const {portfolio: basePortfolio, loading} = usePortfolioWithCategories();
     const symbols = useMemo(
         () => basePortfolio.map((p) => `${p.symbol.toUpperCase()}USDT`),
         [basePortfolio]
@@ -180,14 +180,19 @@ export default function PortfolioTable() {
     return (
         <div className="w-full flex flex-col text-[var(--color-text)]">
             {/* Header */}
-            <div className="sticky top-0 z-10 grid grid-cols-8 gap-2 px-4 py-2 border-b border-[var(--color-border)] bg-[var(--color-card)] text-sm font-semibold hidden md:grid">
-                <HeaderCell label="Coin" sortKey="symbol" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
-                <HeaderCell label="Current Price" sortKey="current" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
-                <HeaderCell label="24h %" sortKey="change24h" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
-                <HeaderCell label="Avg Price" sortKey="avgPrice" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
-                <HeaderCell label="Δ $" sortKey="diffUsd" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
-                <HeaderCell label="Δ %" sortKey="diffPercent" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
-                <HeaderCell label="Share" sortKey="percent" activeKey={sortKey} order={sortOrder} onClick={toggleSort} />
+            <div
+                className="sticky top-0 z-10 grid grid-cols-8 gap-2 px-4 py-2 border-b border-[var(--color-border)] bg-[var(--color-card)] text-sm font-semibold hidden md:grid">
+                <HeaderCell label="Coin" sortKey="symbol" activeKey={sortKey} order={sortOrder} onClick={toggleSort}/>
+                <HeaderCell label="Current Price" sortKey="current" activeKey={sortKey} order={sortOrder}
+                            onClick={toggleSort}/>
+                <HeaderCell label="24h %" sortKey="change24h" activeKey={sortKey} order={sortOrder}
+                            onClick={toggleSort}/>
+                <HeaderCell label="Avg Price" sortKey="avgPrice" activeKey={sortKey} order={sortOrder}
+                            onClick={toggleSort}/>
+                <HeaderCell label="Δ $" sortKey="diffUsd" activeKey={sortKey} order={sortOrder} onClick={toggleSort}/>
+                <HeaderCell label="Δ %" sortKey="diffPercent" activeKey={sortKey} order={sortOrder}
+                            onClick={toggleSort}/>
+                <HeaderCell label="Share" sortKey="percent" activeKey={sortKey} order={sortOrder} onClick={toggleSort}/>
                 <div className="text-right opacity-70">Action</div>
             </div>
 
@@ -209,9 +214,18 @@ export default function PortfolioTable() {
                             <div className="flex items-center gap-2">
                                 <div className="flex flex-col">
                                     <span className="font-semibold">{item.symbol}</span>
-                                    <span className="text-xs opacity-70">{item.name}</span>
+                                    <div className="flex items-center gap-2 text-xs opacity-70">
+                                        <span>{item.name}</span>
+                                        {item.category && (
+                                            <span
+                                                className="px-2 py-[2px] rounded-full bg-[var(--color-border)]/30 text-[10px] uppercase tracking-wide">
+          {item.category}
+        </span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
+
 
                             <div className="text-right">
                                 <div className="text-sm font-medium">${formatNum(current)}</div>
@@ -235,8 +249,18 @@ export default function PortfolioTable() {
                                 className="text-right text-sm cursor-pointer hover:text-blue-400 transition"
                                 onClick={() => setSelected(item)}
                             >
-                                {item.avgPrice ? `$${formatNum(item.avgPrice)}` : "-"}
+                                {item.avgPrice ? (
+                                    <>
+                                        <div>${formatNum(item.avgPrice)}</div>
+                                        <div className="text-xs opacity-70">
+                                            {(item.avgPrice * item.amount).toFixed(2)}$
+                                        </div>
+                                    </>
+                                ) : (
+                                    "-"
+                                )}
                             </div>
+
 
                             <div className={`text-right text-sm font-semibold ${getColor(diffUsd)}`}>
                                 {diffUsd > 0 ? "+" : ""}
@@ -254,10 +278,10 @@ export default function PortfolioTable() {
                                 <button
                                     className="p-1 rounded-md hover:bg-red-500/10 transition"
                                     onClick={() =>
-                                        setDeleteItem({ symbol: item.symbol, name: item.name || item.symbol })
+                                        setDeleteItem({symbol: item.symbol, name: item.name || item.symbol})
                                     }
                                 >
-                                    <Trash2 className="w-4 h-4 text-red-400 hover:text-red-500" />
+                                    <Trash2 className="w-4 h-4 text-red-400 hover:text-red-500"/>
                                 </button>
                             </div>
                         </div>
@@ -287,10 +311,10 @@ export default function PortfolioTable() {
                                 <button
                                     className="p-1 rounded-md hover:bg-red-500/10 transition"
                                     onClick={() =>
-                                        setDeleteItem({ symbol: item.symbol, name: item.name || item.symbol })
+                                        setDeleteItem({symbol: item.symbol, name: item.name || item.symbol})
                                     }
                                 >
-                                    <Trash2 className="w-4 h-4 text-red-400 hover:text-red-500" />
+                                    <Trash2 className="w-4 h-4 text-red-400 hover:text-red-500"/>
                                 </button>
                             </div>
 
@@ -343,7 +367,7 @@ export default function PortfolioTable() {
     );
 }
 
-function HeaderCell({ label, sortKey, activeKey, order, onClick }: any) {
+function HeaderCell({label, sortKey, activeKey, order, onClick}: any) {
     const isActive = activeKey === sortKey;
     return (
         <div
@@ -352,8 +376,8 @@ function HeaderCell({ label, sortKey, activeKey, order, onClick }: any) {
         >
             {label}
             <div className="flex flex-col leading-none">
-                <ChevronUp size={12} className={`${isActive && order === "asc" ? "text-green-400" : "opacity-40"}`} />
-                <ChevronDown size={12} className={`${isActive && order === "desc" ? "text-green-400" : "opacity-40"}`} />
+                <ChevronUp size={12} className={`${isActive && order === "asc" ? "text-green-400" : "opacity-40"}`}/>
+                <ChevronDown size={12} className={`${isActive && order === "desc" ? "text-green-400" : "opacity-40"}`}/>
             </div>
         </div>
     );
