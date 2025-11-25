@@ -113,20 +113,4 @@ export async function DELETE(req: Request) {
     }
 }
 
-//await fetch("/api/manual-average-price");
-
-//await fetch("/api/manual-average-price?symbol=BTC");
-
-// await fetch("/api/manual-average-price", {
-//     method: "PUT",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//         symbol: "BTC",
-//         price: "69000.00", // або date
-//     }),
-// });
-
-// await fetch("/api/manual-average-price?symbol=BTC", {
-//     method: "DELETE",
-// });
 

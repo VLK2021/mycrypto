@@ -22,3 +22,4 @@ export * from './dashboard/MyCoinsList';
 export * from './dashboard/FearGreed';
 export * from './dashboard/MarketMetrics';
 export * from './dashboard/AveragePrice';
+export * from './portfolio/PortfolioTable';
