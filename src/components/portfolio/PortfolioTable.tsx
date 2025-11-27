@@ -99,6 +99,7 @@ export default function PortfolioTable() {
         const ws = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
         wsRef.current = ws;
 
+
         ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
             const payload = message.data;
@@ -476,5 +477,6 @@ const fullNames: Record<string, string> = {
     BONK: "Bonk",
     JUP: "Jupiter",
     W: "Wormhole",
+    WLFI: "World Liberty Financial ",
     PUMP: "Pump.fun",
 };
