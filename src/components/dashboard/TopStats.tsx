@@ -45,6 +45,10 @@ export function TopStats() {
             <CardContainer className="min-h-[120px] flex flex-col justify-center">
                 <PortfolioExposure />
             </CardContainer>
+
+            <CardContainer className="min-h-[120px] flex flex-col justify-center">
+                івафіваі
+            </CardContainer>
         </div>
     );
 }
