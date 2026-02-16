@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 interface LongShortData {
     long: number;
@@ -58,11 +58,11 @@ export default function BtcLongShort() {
             <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden flex">
                 <div
                     className="bg-green-500 transition-all duration-500"
-                    style={{ width: `${data.long}%` }}
+                    style={{width: `${data.long}%`}}
                 />
                 <div
                     className="bg-red-500 transition-all duration-500"
-                    style={{ width: `${data.short}%` }}
+                    style={{width: `${data.short}%`}}
                 />
             </div>
 
