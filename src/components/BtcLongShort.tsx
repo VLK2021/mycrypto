@@ -11,17 +11,34 @@ export default function BtcLongShort() {
     const [data, setData] = useState<LongShortData | null>(null);
 
     useEffect(() => {
-        fetch("/api/longshort")
-            .then((res) => res.json())
-            .then((json) => {
+        let interval: NodeJS.Timeout;
+
+        const fetchData = async () => {
+            try {
+                const res = await fetch("/api/longshort", {
+                    cache: "no-store", // важливо!
+                });
+
+                const json = await res.json();
+
                 if (json.long && json.short) {
                     setData({
                         long: json.long,
                         short: json.short,
                     });
                 }
-            })
-            .catch(() => setData(null));
+            } catch {
+                setData(null);
+            }
+        };
+
+        // перший виклик
+        fetchData();
+
+        // кожні 60 секунд
+        interval = setInterval(fetchData, 60_000);
+
+        return () => clearInterval(interval);
     }, []);
 
     if (!data) {
@@ -38,7 +55,6 @@ export default function BtcLongShort() {
                 BTC Long / Short Ratio
             </div>
 
-            {/* Bar */}
             <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden flex">
                 <div
                     className="bg-green-500 transition-all duration-500"
@@ -50,7 +66,6 @@ export default function BtcLongShort() {
                 />
             </div>
 
-            {/* Numbers */}
             <div className="flex justify-between text-sm font-medium">
         <span className="text-green-400">
           {data.long.toFixed(1)}% Long
