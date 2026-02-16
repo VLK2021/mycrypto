@@ -1,5 +1,7 @@
 import React from "react";
-import {BalanceCharts, InfoSectionBlocks, TopStats} from "@/components";
+import {BalanceCharts, InfoSectionBlocks, TopStats, TotalBalance} from "@/components";
+import CardContainer from "@/components/elements/CardContainer";
+import BtcLongShort from "@/components/BtcLongShort";
 
 
 export default function Home() {
@@ -9,6 +11,12 @@ export default function Home() {
         >
             <div className="w-full flex">
                 <TopStats/>
+            </div>
+
+            <div className="w-full flex">
+                <CardContainer className="min-h-[120px] w-full flex flex-col justify-center">
+                  <BtcLongShort/>
+                </CardContainer>
             </div>
 
             <div className="w-full flex">
