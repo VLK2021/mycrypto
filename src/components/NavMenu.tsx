@@ -24,8 +24,9 @@ export default function NavMenu() {
         { href: "/", label: "Головна", icon: <Home className="w-4 h-4" /> },
         { href: "/transactions", label: "Транзакції", icon: <List className="w-4 h-4" /> },
         { href: "/portfolio", label: "Портфель", icon: <Wallet2 className="w-4 h-4" /> },
-        { href: "/analytics", label: "Аналітика", icon: <BarChart3 className="w-4 h-4" /> },
+        { href: "/analytics/dashboard", label: "Аналітика", icon: <BarChart3 className="w-4 h-4" /> },
     ];
+
 
     return (
         <div ref={menuRef} className="relative">
