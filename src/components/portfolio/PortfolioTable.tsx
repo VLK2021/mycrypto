@@ -58,6 +58,36 @@ export default function PortfolioTable() {
     const reconnectRef = useRef<NodeJS.Timeout | null>(null);
     const fetchedRef = useRef(false);
 
+
+    //✅delete coin
+    const handleDelete = async (symbol: string) => {
+        try {
+            const res = await fetch(`/api/coin/${symbol}`, {
+                method: "DELETE",
+            });
+
+            if (!res.ok) {
+                throw new Error("Delete failed");
+            }
+
+            // видаляємо монету з локального state
+            setPortfolio((prev) => {
+                const filtered = prev.filter((item) => item.symbol !== symbol);
+
+                const total = filtered.reduce((sum, it) => sum + it.value, 0);
+
+                return filtered.map((it) => ({
+                    ...it,
+                    percent: total > 0 ? (it.value / total) * 100 : 0,
+                }));
+            });
+
+        } catch (err) {
+            console.error("❌ Delete error:", err);
+        }
+    };
+
+
     // ✅ Завантаження середніх цін
     useEffect(() => {
         if (!basePortfolio.length || fetchedRef.current) return;
@@ -414,14 +444,21 @@ export default function PortfolioTable() {
                     currentDate={new Date().toISOString()}
                 />
             )}
+
             {deleteItem && (
                 <ConfirmDeleteModal
                     symbol={deleteItem.symbol}
                     name={deleteItem.name}
                     onCancel={() => setDeleteItem(null)}
-                    onConfirm={() => setDeleteItem(null)}
+                    onConfirm={() => {
+                        if (deleteItem) {
+                            handleDelete(deleteItem.symbol);
+                        }
+                        setDeleteItem(null);
+                    }}
                 />
             )}
+
         </div>
     );
 }
