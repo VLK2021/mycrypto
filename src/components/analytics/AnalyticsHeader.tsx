@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Newspaper, Activity, LineChart } from "lucide-react";
+import {analyticsNav} from "@/constants/analyticsNav";
 
 
 type NavItem = {
@@ -15,15 +15,9 @@ type NavItem = {
 export default function AnalyticsHeader() {
     const pathname = usePathname();
 
-    const items: NavItem[] = [
-        { icon: LayoutDashboard, label: "Dashboard", route: "/analytics/dashboard" },
-        { icon: Newspaper, label: "News", route: "/analytics/news" },
-        { icon: Activity, label: "RSI", route: "/analytics/rsi" },
-        { icon: LineChart, label: "Market", route: "/analytics/market" },
-    ];
 
     const isActive = (route: string) => {
-        if (route === "/analytics") return pathname === "/analytics";
+        if (route === "/analytics/dashboard") return pathname === "/analytics/dashboard";
         return pathname === route || pathname.startsWith(route + "/");
     };
 
@@ -39,7 +33,7 @@ export default function AnalyticsHeader() {
                         items-stretch
                     "
                 >
-                    {items.map((item) => {
+                    {analyticsNav.map((item) => {
                         const Icon = item.icon;
                         const active = isActive(item.route);
 
