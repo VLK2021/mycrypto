@@ -1,4 +1,6 @@
 export default function RsiInformation() {
+
+
     return (
         <div className="w-full px-1 md:px-8 flex flex-col gap-6">
 
@@ -155,6 +157,37 @@ export default function RsiInformation() {
                         <span className="text-[var(--color-text-muted)]">Overbought — можливий відкат</span>
                     </div>
                 </div>
+            </section>
+
+            <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 md:p-6 flex flex-col gap-5">
+                <h2 className="text-xl md:text-2xl font-semibold">
+                    Популярні таймфрейми RSI
+                </h2>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-background)]/40 p-4 text-center">
+                        <span className="text-lg font-semibold">15m</span>
+                        <p className="text-sm text-[var(--color-text-muted)]">скальпінг</p>
+                    </div>
+
+                    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-background)]/40 p-4 text-center">
+                        <span className="text-lg font-semibold">1H</span>
+                        <p className="text-sm text-[var(--color-text-muted)]">інтрадей</p>
+                    </div>
+
+                    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-background)]/40 p-4 text-center">
+                        <span className="text-lg font-semibold">4H</span>
+                        <p className="text-sm text-[var(--color-text-muted)]">середній тренд</p>
+                    </div>
+
+                    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-background)]/40 p-4 text-center">
+                        <span className="text-lg font-semibold">1D</span>
+                        <p className="text-sm text-[var(--color-text-muted)]">глобальний тренд</p>
+                    </div>
+
+                </div>
+
             </section>
 
             {/* ДОДАНО НИЖЧЕ, ТВОЄ НЕ ЗМІНЮВАВ */}
