@@ -15,11 +15,10 @@ type NavItem = {
 export default function AnalyticsHeader() {
     const pathname = usePathname();
 
-
     const isActive = (route: string) => {
-        if (route === "/analytics/dashboard") return pathname === "/analytics/dashboard";
         return pathname === route || pathname.startsWith(route + "/");
     };
+
 
     return (
         <div className="w-full border-b border-[var(--color-border)] pb-3">

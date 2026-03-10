@@ -1,9 +1,6 @@
+import { redirect } from "next/navigation";
+
+
 export default function RsiPage() {
-    return (
-        <div
-            className="min-h-screen text-[var(--color-text)] bg-[var(--color-background)] md:px-8 py-3 flex flex-col gap-4"
-        >
-            rsi
-        </div>
-    )
+    redirect("/analytics/rsi/information");
 }
