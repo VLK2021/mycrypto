@@ -1,9 +1,9 @@
 "use client";
 
-
-import {NewsItem} from "@/lib/news/types";
+import { NewsItem } from "@/lib/news/types";
 
 function timeAgo(timestamp: number) {
+
     const diff = Date.now() - timestamp;
 
     const minutes = Math.floor(diff / 60000);
@@ -17,21 +17,25 @@ function timeAgo(timestamp: number) {
 
 export default function NewsCard({ news }: { news: NewsItem }) {
 
+    const domain = new URL(news.url).hostname;
+
     return (
 
         <a
             href={news.url}
             target="_blank"
+            rel="noopener noreferrer"
             className="
-      group
-      rounded-xl
-      overflow-hidden
-      border
-      transition
-      hover:shadow-lg
-      hover:-translate-y-[2px]
-      flex flex-col
-      "
+            group
+            rounded-xl
+            overflow-hidden
+            border
+            transition
+            hover:shadow-lg
+            hover:-translate-y-[2px]
+            flex
+            flex-col
+            "
             style={{
                 backgroundColor: "var(--color-card)",
                 borderColor: "var(--color-border)"
@@ -53,27 +57,27 @@ export default function NewsCard({ news }: { news: NewsItem }) {
                         src={news.image}
                         alt={news.title}
                         className="
-            w-full
-            h-full
-            object-cover
-            group-hover:scale-105
-            transition
-            duration-300
-            "
+                        w-full
+                        h-full
+                        object-cover
+                        group-hover:scale-105
+                        transition
+                        duration-300
+                        "
                     />
 
                 ) : (
 
                     <div
                         className="
-            w-full
-            h-full
-            flex
-            items-center
-            justify-center
-            text-xs
-            opacity-50
-            "
+                        w-full
+                        h-full
+                        flex
+                        items-center
+                        justify-center
+                        text-xs
+                        opacity-50
+                        "
                     >
                         NEWS
                     </div>
@@ -90,49 +94,60 @@ export default function NewsCard({ news }: { news: NewsItem }) {
 
                 <div
                     className="
-          text-sm
-          font-semibold
-          leading-snug
-          line-clamp-2
-          group-hover:text-[var(--color-brand)]
-          transition
-          "
+                    text-sm
+                    font-semibold
+                    leading-snug
+                    line-clamp-2
+                    group-hover:text-[var(--color-brand)]
+                    transition
+                    "
                 >
                     {news.title}
                 </div>
 
                 {/* DESCRIPTION */}
 
-                <div
-                    className="
-          text-xs
-          opacity-70
-          line-clamp-2
-          "
-                >
-                    {news.description}
-                </div>
+                {news.description && (
+
+                    <div
+                        className="
+                        text-xs
+                        opacity-70
+                        line-clamp-2
+                        "
+                    >
+                        {news.description}
+                    </div>
+
+                )}
 
                 {/* FOOTER */}
 
                 <div
                     className="
-          flex
-          items-center
-          justify-between
-          text-xs
-          pt-2
-          opacity-70
-          "
+                    flex
+                    items-center
+                    justify-between
+                    text-xs
+                    pt-2
+                    opacity-70
+                    "
                 >
 
-          <span>
-            {news.source}
-          </span>
+                    <div className="flex items-center gap-2">
+
+                        <img
+                            src={`https://www.google.com/s2/favicons?domain=${domain}`}
+                            className="w-4 h-4"
+                        />
+
+                        <span>{news.source}</span>
+
+                    </div>
 
                     <span>
-            {timeAgo(news.publishedAt)}
-          </span>
+                        {timeAgo(news.publishedAt)}
+                    </span>
 
                 </div>
 
