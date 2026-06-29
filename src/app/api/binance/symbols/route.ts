@@ -13,6 +13,7 @@ export async function GET() {
                 icon: `https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${s.baseAsset.toLowerCase()}.png`,
             }));
 
+
         return NextResponse.json(symbols);
     } catch (error) {
         console.error("Error fetching symbols:", error);
