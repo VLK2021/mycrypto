@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
@@ -20,34 +21,121 @@ export default function OversoldPage() {
 
     const [coins, setCoins] = useState<RsiItem[]>([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
 
     const [timeframe, setTimeframe] = useState<"1h" | "4h">("4h")
     const [level, setLevel] = useState(20)
+    const [retry, setRetry] = useState(0)
 
     useEffect(() => {
+
+        const controller = new AbortController()
+        let active = true
 
         const load = async () => {
 
             try {
 
-                const res = await fetch("/api/rsi")
+                setLoading(true)
+                setError(null)
 
-                const json = await res.json()
+                const res = await fetch("/api/rsi", {
+                    cache: "no-store",
+                    signal: controller.signal
+                })
 
-                setCoins(json.data)
+                if (!res.ok) {
+                    throw new Error(
+                        `Помилка сервера RSI (HTTP ${res.status})`
+                    )
+                }
+
+                const text = await res.text()
+
+                if (!text.trim()) {
+                    throw new Error(
+                        "Сервер повернув порожню відповідь"
+                    )
+                }
+
+                let json: unknown
+
+                try {
+                    json = JSON.parse(text)
+                } catch {
+                    throw new Error(
+                        "Сервер повернув некоректний JSON"
+                    )
+                }
+
+                if (
+                    typeof json !== "object" ||
+                    json === null ||
+                    !("data" in json) ||
+                    !Array.isArray(json.data)
+                ) {
+                    throw new Error(
+                        "Некоректний формат даних RSI"
+                    )
+                }
+
+                const validCoins: RsiItem[] = json.data.filter(
+                    (item: unknown): item is RsiItem => {
+
+                        if (
+                            typeof item !== "object" ||
+                            item === null
+                        ) {
+                            return false
+                        }
+
+                        const coin = item as Record<string, unknown>
+
+                        return (
+                            typeof coin.symbol === "string" &&
+                            typeof coin.price === "number" &&
+                            Number.isFinite(coin.price) &&
+                            typeof coin.rsi_1h === "number" &&
+                            Number.isFinite(coin.rsi_1h) &&
+                            typeof coin.rsi_4h === "number" &&
+                            Number.isFinite(coin.rsi_4h)
+                        )
+                    }
+                )
+
+                if (active) {
+                    setCoins(validCoins)
+                }
+
+            } catch (err) {
+
+                if (!active) return
+
+                console.error("RSI OVERSOLD ERROR:", err)
+
+                setError(
+                    err instanceof Error
+                        ? err.message
+                        : "Не вдалося завантажити RSI"
+                )
 
             } finally {
 
-                setLoading(false)
+                if (active) {
+                    setLoading(false)
+                }
 
             }
-
         }
 
-        load()
+        void load()
 
-    }, [])
+        return () => {
+            active = false
+            controller.abort()
+        }
 
+    }, [retry])
 
     const filteredCoins = useMemo(() => {
 
@@ -59,16 +147,13 @@ export default function OversoldPage() {
 
     }, [coins, timeframe, level])
 
-
     return (
 
         <div className="w-full flex flex-col gap-8 px-6 py-6">
 
-
             {/* FILTER PANEL */}
 
             <div className="w-full bg-[#0f1628] border border-[#1c2544] rounded-2xl p-6 flex items-center justify-between flex-wrap gap-6">
-
 
                 {/* TIMEFRAME */}
 
@@ -81,21 +166,25 @@ export default function OversoldPage() {
                     <div className="flex bg-[#0b1223] rounded-xl p-1">
 
                         <button
+                            type="button"
                             onClick={() => setTimeframe("1h")}
-                            className={`px-5 py-1.5 rounded-lg text-sm transition
-                            ${timeframe === "1h"
-                                ? "bg-blue-500 text-white shadow-md"
-                                : "text-gray-400 hover:text-white"}`}
+                            className={`px-5 py-1.5 rounded-lg text-sm transition ${
+                                timeframe === "1h"
+                                    ? "bg-blue-500 text-white shadow-md"
+                                    : "text-gray-400 hover:text-white"
+                            }`}
                         >
                             1ч
                         </button>
 
                         <button
+                            type="button"
                             onClick={() => setTimeframe("4h")}
-                            className={`px-5 py-1.5 rounded-lg text-sm transition
-                            ${timeframe === "4h"
-                                ? "bg-blue-500 text-white shadow-md"
-                                : "text-gray-400 hover:text-white"}`}
+                            className={`px-5 py-1.5 rounded-lg text-sm transition ${
+                                timeframe === "4h"
+                                    ? "bg-blue-500 text-white shadow-md"
+                                    : "text-gray-400 hover:text-white"
+                            }`}
                         >
                             4ч
                         </button>
@@ -103,7 +192,6 @@ export default function OversoldPage() {
                     </div>
 
                 </div>
-
 
                 {/* RSI LEVEL */}
 
@@ -116,21 +204,25 @@ export default function OversoldPage() {
                     <div className="flex gap-4">
 
                         <button
+                            type="button"
                             onClick={() => setLevel(20)}
-                            className={`px-8 py-3 rounded-xl font-semibold text-base transition
-                            ${level === 20
-                                ? "bg-green-500 text-white shadow-lg shadow-green-500/20"
-                                : "bg-[#111a33] text-gray-300 hover:bg-[#1a2447]"}`}
+                            className={`px-8 py-3 rounded-xl font-semibold text-base transition ${
+                                level === 20
+                                    ? "bg-green-500 text-white shadow-lg shadow-green-500/20"
+                                    : "bg-[#111a33] text-gray-300 hover:bg-[#1a2447]"
+                            }`}
                         >
                             ≤20
                         </button>
 
                         <button
+                            type="button"
                             onClick={() => setLevel(10)}
-                            className={`px-8 py-3 rounded-xl font-semibold text-base transition
-                            ${level === 10
-                                ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/20"
-                                : "bg-[#111a33] text-gray-300 hover:bg-[#1a2447]"}`}
+                            className={`px-8 py-3 rounded-xl font-semibold text-base transition ${
+                                level === 10
+                                    ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/20"
+                                    : "bg-[#111a33] text-gray-300 hover:bg-[#1a2447]"
+                            }`}
                         >
                             ≤10
                         </button>
@@ -141,17 +233,19 @@ export default function OversoldPage() {
 
             </div>
 
-
             {/* RESULTS */}
 
             <div className="w-full bg-[#0f1628] border border-[#1c2544] rounded-2xl overflow-hidden">
 
+                {/* TABLE HEADER */}
 
                 <div className="grid grid-cols-3 px-6 py-3 text-gray-400 text-sm border-b border-[#1c2544]">
 
                     <div>Монета</div>
 
-                    <div className="text-right">Ціна</div>
+                    <div className="text-right">
+                        Ціна
+                    </div>
 
                     <div className="text-right">
                         RSI ({timeframe})
@@ -159,17 +253,55 @@ export default function OversoldPage() {
 
                 </div>
 
+                {/* LOADING */}
 
                 {loading && (
 
                     <div className="text-center py-10 text-gray-400">
-                        Loading scanner...
+                        Завантаження RSI Scanner...
                     </div>
 
                 )}
 
+                {/* ERROR */}
 
-                {!loading && filteredCoins.map((coin) => {
+                {!loading && error && (
+
+                    <div className="text-center py-10 px-6">
+
+                        <div className="text-red-400 font-semibold mb-2">
+                            Помилка завантаження RSI
+                        </div>
+
+                        <div className="text-gray-400 text-sm">
+                            {error}
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() => setRetry((value) => value + 1)}
+                            className="mt-5 px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
+                        >
+                            Спробувати ще раз
+                        </button>
+
+                    </div>
+
+                )}
+
+                {/* EMPTY RESULT */}
+
+                {!loading && !error && filteredCoins.length === 0 && (
+
+                    <div className="text-center py-10 text-gray-400">
+                        Монет із RSI ≤{level} на таймфреймі {timeframe} не знайдено
+                    </div>
+
+                )}
+
+                {/* COINS */}
+
+                {!loading && !error && filteredCoins.map((coin) => {
 
                     const rsi =
                         timeframe === "1h"
@@ -180,7 +312,6 @@ export default function OversoldPage() {
                         timeframe === "1h"
                             ? coin.candles_oversold_1h
                             : coin.candles_oversold_4h
-
 
                     return (
 
@@ -199,12 +330,14 @@ export default function OversoldPage() {
 
                             <div className="text-right text-green-400 font-semibold">
 
-                                {rsi}
+                                {rsi.toFixed(2)}
 
-                                {candles > 0 && (
+                                {typeof candles === "number" && candles > 0 && (
+
                                     <span className="text-gray-400 text-sm ml-2">
                                         ({candles})
                                     </span>
+
                                 )}
 
                             </div>
