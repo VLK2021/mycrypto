@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Menu, X, Home, List, Wallet2, BarChart3 } from "lucide-react";
+import { Menu, X, Home, List, Wallet2, BarChart3, Gem } from "lucide-react";
 
 export default function NavMenu() {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +22,7 @@ export default function NavMenu() {
 
     const routes = [
         { href: "/", label: "Головна", icon: <Home className="w-4 h-4" /> },
+        { href: "/tradescope", label: "Торгові сетапи", icon: <Gem className="w-4 h-4" /> },
         { href: "/transactions", label: "Транзакції", icon: <List className="w-4 h-4" /> },
         { href: "/portfolio", label: "Портфель", icon: <Wallet2 className="w-4 h-4" /> },
         { href: "/analytics/dashboard", label: "Аналітика", icon: <BarChart3 className="w-4 h-4" /> },
