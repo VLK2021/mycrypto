@@ -4,3 +4,4 @@ export * from './usePortfolioExposure';
 export * from './usePriceChanges';
 export * from './useScreener';
 export * from './useSymbols';
+export * from './useTickerPrice';
