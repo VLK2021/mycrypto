@@ -10,6 +10,15 @@
     --color-brand:      #3B82F6;
     --color-success:    #16A34A;
     --color-error:      #DC2626;
+
+
+
+
+    --color-surface: #ffffff;
+    --color-text-secondary: #4b5563;
+    --color-brand-hover: #5d35d4;
+    --color-danger: #dc2626;
+    --color-warning: #d97706;
 }
 
 .dark {
@@ -22,4 +31,29 @@
     --color-brand:      #2563EB;
     --color-success:    #22C55E;
     --color-error:      #EF4444;
+
+
+
+    --color-surface: #08111c;
+    --color-text-secondary: #cbd5e1;
+    --color-brand-hover: #8158f5;
+    --color-danger: #ff453a;
+    --color-warning: #f59e0b;
+}
+
+button,
+select {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
 }

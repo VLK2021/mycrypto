@@ -116,7 +116,7 @@ const SetupCard = ({
             try {
                 const response =
                     await fetch(
-                        `/api/setups/${setup.id}`,
+                        `/api/tradescope/setups/${setup.id}`,
                         {
                             method:
                                 "PATCH",
@@ -221,7 +221,6 @@ const SetupCard = ({
                             }
                         </p>
                     ) : null}
-
                     <div
                         className="
                             mt-3
@@ -333,7 +332,6 @@ const SetupCard = ({
                         />
                     </div>
                 </div>
-
                 <SetupCardActions
                     onUpdateAction={() => {
                         setIsUpdateModalOpen(
