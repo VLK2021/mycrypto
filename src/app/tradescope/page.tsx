@@ -1,9 +1,33 @@
-export default function TradeScope(){
-    return(
+
+import {
+    HomePage,
+    type HomePageSearchParams,
+} from "@/components/tradescope/home";
+
+type TradeScopeProps = {
+    searchParams: Promise<HomePageSearchParams>;
+};
+
+export default async function TradeScope({
+                                             searchParams,
+                                         }: TradeScopeProps) {
+    const params = await searchParams;
+
+    return (
         <div
-            className="min-h-screen text-[var(--color-text)] bg-[var(--color-background)] px-1 md:px-8 py-3 flex flex-col gap-4"
+            className="
+                flex
+                min-h-screen
+                flex-col
+                gap-4
+                bg-[var(--color-background)]
+                px-1
+                py-3
+                text-[var(--color-text)]
+                md:px-8
+            "
         >
-            TradeScpe
+            <HomePage searchParams={params} />
         </div>
-    )
+    );
 }

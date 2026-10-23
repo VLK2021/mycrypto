@@ -13,9 +13,7 @@ import {
 import {
     UpdateSetupModal,
 } from "@/components/modals/updateSetup";
-// import {
-//     useLanguage,
-// } from "@/context";
+
 import {
     formatSetupPrice,
 } from "@/helpers/formatSetupPrice";
@@ -53,9 +51,6 @@ const SetupCard = ({
                    }: SetupCardProps) => {
     const router =
         useRouter();
-
-    // const { locale } =
-    //     useLanguage();
 
     const {lang} = useLanguage();
     const t = lang === "uk" ? uk : en;

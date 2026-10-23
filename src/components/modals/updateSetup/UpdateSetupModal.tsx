@@ -8,9 +8,7 @@ import {
     X,
 } from "lucide-react";
 
-// import {
-//     useLanguage,
-// } from "@/context";
+
 import type {
     SetupItem,
 } from "@/types/setup";
@@ -33,8 +31,6 @@ const UpdateSetupModal = ({
                               setup,
                               onCloseAction,
                           }: UpdateSetupModalProps) => {
-    // const { locale } =
-    //     useLanguage();
 
     const {lang} = useLanguage();
     const t = lang === "uk" ? uk : en;

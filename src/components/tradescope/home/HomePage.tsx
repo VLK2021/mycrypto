@@ -1,17 +1,13 @@
-import {
-    setupQuerySchema,
-} from "@/schemas/setup.schema";
-import {
-    getSetups,
-} from "@/services/setup.service";
 
-import type {
-    SetupItem,
-} from "@//types/setup";
-import {SetupPagination} from "@/components/tradescope/paginations/setupPagination";
-import {SetupFilters} from "@/components/tradescope/filters/setupFilters";
-import {SetupsList} from "@/components/tradescope/setups";
+import { setupQuerySchema } from "@/schemas/setup.schema";
+import { getSetups } from "@/services/setup.service";
 
+import type { SetupItem } from "@/types/setup";
+
+import { AddSetupButton } from "@/components/tradescope/AddSetupButton";
+import { SetupFilters } from "@/components/tradescope/filters/setupFilters";
+import { SetupPagination } from "@/components/tradescope/paginations/setupPagination";
+import { SetupsList } from "@/components/tradescope/setups";
 
 type HomePageSearchParams = {
     page?: string;
@@ -24,25 +20,24 @@ type HomePageSearchParams = {
 };
 
 type HomePageProps = {
-    searchParams:
-        HomePageSearchParams;
+    searchParams: HomePageSearchParams;
 };
 
 const HomePage = async ({
                             searchParams,
                         }: HomePageProps) => {
-    const query =
-        setupQuerySchema.parse(
-            searchParams,
-        );
 
-    const result =
-        await getSetups(
-            query,
-        );
+    // VALIDATE SEARCH PARAMS
 
-    const setups =
-        result.data as SetupItem[];
+    const query = setupQuerySchema.parse(searchParams);
+
+    // LOAD SETUPS
+
+    const result = await getSetups(query);
+
+    const setups = result.data as SetupItem[];
+
+    // PAGINATION DATA
 
     const {
         page,
@@ -53,12 +48,12 @@ const HomePage = async ({
         hasPreviousPage,
     } = result.pagination;
 
+    // ACTIVE FILTERS
+
     const hasActiveFilters =
         query.status !== "all" ||
         query.direction !== "all" ||
-        Boolean(
-            query.symbol,
-        );
+        Boolean(query.symbol);
 
     return (
         <main
@@ -67,129 +62,148 @@ const HomePage = async ({
                 w-full
                 max-w-[1600px]
                 px-4
-                py-8
-                sm:px-5
-                md:px-6
+                py-6
+                sm:px-6
                 lg:px-8
             "
         >
-            <div className="mb-6">
-                <div
-                    className="
-                        flex
-                        flex-wrap
-                        items-center
-                        gap-3
-                    "
-                >
-                    <h1
-                        className="
-                            text-2xl
-                            font-semibold
-                            text-[var(--color-text)]
-                        "
-                    >
-                        TradeScope
-                    </h1>
 
-                    <div
-                        title={
-                            hasActiveFilters
-                                ? "Кількість знайдених сетапів"
-                                : "Загальна кількість сетапів"
-                        }
+            {/* PAGE HEADER */}
+
+            <header
+                className="
+                    mb-8
+                    flex
+                    flex-col
+                    gap-5
+                    sm:flex-row
+                    sm:items-center
+                    sm:justify-between
+                "
+            >
+
+                {/* TITLE */}
+
+                <div className="min-w-0">
+
+                    <div className="flex flex-wrap items-center gap-3">
+
+                        <h1
+                            className="
+                                text-2xl
+                                font-semibold
+                                tracking-tight
+                                text-[var(--color-text)]
+                                sm:text-3xl
+                            "
+                        >
+                            TradeScope
+                        </h1>
+
+                        {/* SETUPS COUNTER */}
+
+                        <span
+                            title={
+                                hasActiveFilters
+                                    ? "Кількість знайдених сетапів"
+                                    : "Загальна кількість сетапів"
+                            }
+                            className="
+                                inline-flex
+                                h-7
+                                items-center
+                                gap-2
+                                rounded-full
+                                border
+                                border-[var(--color-border)]
+                                bg-[var(--color-surface)]
+                                px-3
+                                text-sm
+                                font-medium
+                                tabular-nums
+                                text-[var(--color-text-secondary)]
+                            "
+                        >
+                            <span
+                                className="
+                                    size-1.5
+                                    rounded-full
+                                    bg-[var(--color-brand)]
+                                "
+                                aria-hidden="true"
+                            />
+
+                            {totalItems}
+                        </span>
+
+                    </div>
+
+                    {/* DESCRIPTION */}
+
+                    <p
                         className="
-                            inline-flex
-                            h-7
-                            items-center
-                            gap-2
-                            rounded-full
-                            border
-                            border-[var(--color-border)]
-                            bg-[var(--color-surface)]
-                            px-3
+                            mt-2
                             text-sm
-                            font-medium
-                            tabular-nums
+                            leading-6
                             text-[var(--color-text-secondary)]
                         "
                     >
-                        <span
-                            className="
-                                size-1.5
-                                rounded-full
-                                bg-[var(--color-brand)]
-                            "
-                            aria-hidden="true"
-                        />
+                        Торгові сетапи та рівні управління позиціями
+                    </p>
 
-                        {totalItems}
-                    </div>
                 </div>
 
-                <p
-                    className="
-                        mt-1
-                        text-sm
-                        text-[var(--color-text-secondary)]
-                    "
-                >
-                    Торгові сетапи та рівні
-                    управління позиціями
-                </p>
-            </div>
+                {/* ADD SETUP BUTTON */}
 
-            <SetupFilters
-                symbol={
-                    query.symbol
-                }
-                status={
-                    query.status
-                }
-                direction={
-                    query.direction
-                }
-                sort={
-                    query.sort
-                }
-                order={
-                    query.order
-                }
-            />
+                <div className="flex shrink-0 items-center">
+                    <AddSetupButton />
+                </div>
 
-            <SetupsList
-                setups={
-                    setups
-                }
-                hasActiveFilters={
-                    hasActiveFilters
-                }
-            />
+            </header>
 
-            <SetupPagination
-                page={page}
-                limit={limit}
-                totalItems={
-                    totalItems
-                }
-                totalPages={
-                    totalPages
-                }
-                hasNextPage={
-                    hasNextPage
-                }
-                hasPreviousPage={
-                    hasPreviousPage
-                }
-            />
+            {/* MAIN CONTENT */}
+
+            <section
+                aria-label="Торгові сетапи"
+                className="flex flex-col gap-6"
+            >
+
+                {/* FILTERS */}
+
+                <SetupFilters
+                    symbol={query.symbol}
+                    status={query.status}
+                    direction={query.direction}
+                    sort={query.sort}
+                    order={query.order}
+                />
+
+                {/* SETUPS LIST */}
+
+                <SetupsList
+                    setups={setups}
+                    hasActiveFilters={hasActiveFilters}
+                />
+
+                {/* PAGINATION */}
+
+                {totalPages > 1 && (
+                    <SetupPagination
+                        page={page}
+                        limit={limit}
+                        totalItems={totalItems}
+                        totalPages={totalPages}
+                        hasNextPage={hasNextPage}
+                        hasPreviousPage={hasPreviousPage}
+                    />
+                )}
+
+            </section>
+
         </main>
     );
 };
 
-export {
-    HomePage,
-};
+export { HomePage };
 
-export type {
-    HomePageSearchParams,
-};
+export type { HomePageSearchParams };

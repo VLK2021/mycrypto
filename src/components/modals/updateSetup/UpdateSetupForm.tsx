@@ -222,7 +222,7 @@ const UpdateSetupForm = ({
 
                     const response =
                         await fetch(
-                            "/api/binance/symbols",
+                            "/api/tradescope/binance/symbols",
                             {
                                 method:
                                     "GET",
@@ -395,7 +395,7 @@ const UpdateSetupForm = ({
             try {
                 const response =
                     await fetch(
-                        `/api/setups/${setup.id}`,
+                        `/api/tradescope/setups/${setup.id}`,
                         {
                             method:
                                 "PATCH",

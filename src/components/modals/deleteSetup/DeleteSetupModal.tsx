@@ -124,7 +124,7 @@ const DeleteSetupModal = ({
             setDeleteError("");
 
             const response = await fetch(
-                `/api/setups/${setupId}`,
+                `/api/tradescope/setups/${setupId}`,
                 {
                     method: "DELETE",
                 },
