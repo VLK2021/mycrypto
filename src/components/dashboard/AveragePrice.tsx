@@ -155,7 +155,6 @@ export default function AveragePrice() {
                 <div className="w-[15%] text-left text-sm font-semibold opacity-70">
                     {t.symbol}
                 </div>
-
                 <HeaderCell
                     label={t.avgPrice}
                     sortKey="price"
