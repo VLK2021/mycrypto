@@ -12,28 +12,29 @@
     "@emotion/styled": "^11.14.1",
     "@prisma/adapter-neon": "^7.10.1",
     "@prisma/client": "^6.17.1",
+    "@tailwindcss/postcss": "^4.1.14",
     "d3-scale-chromatic": "^3.1.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.546.0",
     "next": "15.5.5",
     "node-fetch": "^3.3.2",
+    "postcss": "^8.5.31",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
     "react-select": "^5.10.2",
     "recharts": "^3.3.0",
     "rss-parser": "^3.13.0",
+    "tailwindcss": "^4.1.14",
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.14",
     "@types/d3-scale-chromatic": "^3.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "prisma": "^6.17.1",
-    "tailwindcss": "^4.1.14",
     "typescript": "^5"
   }
 }
