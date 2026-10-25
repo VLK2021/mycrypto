@@ -111,7 +111,6 @@ export const handleApiError = (
             },
         );
     }
-
     console.error(fallbackMessage, error);
 
     return NextResponse.json(
