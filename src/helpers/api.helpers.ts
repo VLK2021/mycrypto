@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-import { Prisma } from "@/generated/prisma";
+// import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 
 type ApiErrorDetails = {
     field: string;

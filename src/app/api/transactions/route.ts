@@ -1,7 +1,10 @@
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+// import { NextResponse } from "next/server";
+// import { PrismaClient } from "@/generated/prisma";
+//
+// const prisma = new PrismaClient();
 
-const prisma = new PrismaClient();
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
     try {
