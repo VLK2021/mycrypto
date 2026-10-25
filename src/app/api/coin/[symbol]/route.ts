@@ -1,31 +1,32 @@
-import { prisma } from "@/lib/prisma"
-import { NextResponse } from "next/server"
+
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function DELETE(
     _req: Request,
-    { params }: { params: { symbol: string } }
+    { params }: { params: Promise<{ symbol: string }> }
 ) {
-    const symbol = params.symbol
+    const { symbol } = await params;
 
     try {
         await prisma.$transaction([
             prisma.transaction.deleteMany({
-                where: { symbol }
+                where: { symbol },
             }),
 
             prisma.manualAveragePrice.deleteMany({
-                where: { symbol }
-            })
-        ])
+                where: { symbol },
+            }),
+        ]);
 
-        return NextResponse.json({ success: true })
+        return NextResponse.json({ success: true });
 
     } catch (error) {
-        console.error(error)
+        console.error(error);
 
         return NextResponse.json(
             { error: "Failed to delete coin" },
             { status: 500 }
-        )
+        );
     }
 }
