@@ -48,10 +48,53 @@ export async function GET() {
             fetch("https://fapi.binance.com/fapi/v1/premiumIndex")
         ]);
 
+        // const exchange = await exchangeRes.json();
+        // const ticker = await tickerRes.json();
+        // const funding = await fundingRes.json();
+        //----------//
+
+
+        const responses = [
+            { name: "exchangeInfo", response: exchangeRes },
+            { name: "ticker24hr", response: tickerRes },
+            { name: "premiumIndex", response: fundingRes },
+        ];
+
+        for (const { name, response } of responses) {
+            if (!response.ok) {
+                const body = await response.text();
+
+                throw new Error(
+                    `Binance ${name}: HTTP ${response.status} - ${body.slice(0, 500)}`
+                );
+            }
+        }
+
         const exchange = await exchangeRes.json();
         const ticker = await tickerRes.json();
         const funding = await fundingRes.json();
 
+        if (
+            !Array.isArray(exchange?.symbols) ||
+            !Array.isArray(ticker) ||
+            !Array.isArray(funding)
+        ) {
+            throw new Error(
+                `Invalid Binance response: ` +
+                `exchange=${Array.isArray(exchange?.symbols)}, ` +
+                `ticker=${Array.isArray(ticker)}, ` +
+                `funding=${Array.isArray(funding)}`
+            );
+        }
+
+
+
+
+
+
+
+
+//--------------//
         const fundingMap = new Map();
 
         for (const f of funding) {
