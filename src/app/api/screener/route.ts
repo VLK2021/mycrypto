@@ -48,11 +48,6 @@ export async function GET() {
             fetch("https://fapi.binance.com/fapi/v1/premiumIndex")
         ]);
 
-        // const exchange = await exchangeRes.json();
-        // const ticker = await tickerRes.json();
-        // const funding = await fundingRes.json();
-        //----------//
-
 
         const responses = [
             { name: "exchangeInfo", response: exchangeRes },
@@ -87,14 +82,6 @@ export async function GET() {
             );
         }
 
-
-
-
-
-
-
-
-//--------------//
         const fundingMap = new Map();
 
         for (const f of funding) {
@@ -165,3 +152,5 @@ export async function GET() {
 
     }
 }
+
+
