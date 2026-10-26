@@ -85,36 +85,49 @@ export default function ScreenerTable() {
     }, [data, search]);
 
     useEffect(() => {
-        async function fetchCoin() {
-            if (!search.trim()) {
-                setExternalCoin(null);
-                return;
-            }
+        const query = search.trim();
 
-            if (filteredData.length > 0) {
-                setExternalCoin(null);
-                return;
-            }
+        if (!query || filteredData.length > 0) {
+            setExternalCoin(null);
+            return;
+        }
 
-            const symbol = search.toUpperCase() + "USDT";
+        const controller = new AbortController();
+
+        const timer = window.setTimeout(async () => {
+            const symbol =
+                query.toUpperCase().endsWith("USDT")
+                    ? query.toUpperCase()
+                    : `${query.toUpperCase()}USDT`;
 
             try {
-                const [tickerRes, fundingRes, oiRes] = await Promise.all([
-                    fetch(`https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=${symbol}`),
-                    fetch(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${symbol}`),
-                    fetch(`https://fapi.binance.com/fapi/v1/openInterest?symbol=${symbol}`),
-                ]);
+                const urls = [
+                    `https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=${encodeURIComponent(symbol)}`,
+                    `https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${encodeURIComponent(symbol)}`,
+                    `https://fapi.binance.com/fapi/v1/openInterest?symbol=${encodeURIComponent(symbol)}`,
+                ];
 
-                if (!tickerRes.ok) {
+                const responses = await Promise.all(
+                    urls.map((url) =>
+                        fetch(url, {
+                            signal: controller.signal,
+                        })
+                    )
+                );
+
+                if (responses.some((res) => !res.ok)) {
                     setExternalCoin(null);
                     return;
                 }
 
-                const ticker = await tickerRes.json();
-                const funding = await fundingRes.json();
-                const oi = await oiRes.json();
+                const [ticker, funding, oi] =
+                    await Promise.all(
+                        responses.map((res) => res.json())
+                    );
 
-                const coin: Coin = {
+                if (controller.signal.aborted) return;
+
+                setExternalCoin({
                     symbol: ticker.symbol,
                     price: Number(ticker.lastPrice),
                     change24h: Number(ticker.priceChangePercent),
@@ -123,15 +136,18 @@ export default function ScreenerTable() {
                     funding: Number(funding.lastFundingRate),
                     rsi1h: null,
                     rsi4h: null,
-                };
-
-                setExternalCoin(coin);
+                });
             } catch {
-                setExternalCoin(null);
+                if (!controller.signal.aborted) {
+                    setExternalCoin(null);
+                }
             }
-        }
+        }, 600);
 
-        fetchCoin();
+        return () => {
+            window.clearTimeout(timer);
+            controller.abort();
+        };
     }, [search, filteredData]);
 
     const tableData = useMemo(() => {
