@@ -1,5 +1,5 @@
 import React from "react";
-import {BalanceCharts, InfoSectionBlocks, TopStats, TotalBalance} from "@/components";
+import {BalanceCharts, InfoSectionBlocks, TopStats} from "@/components";
 import CardContainer from "@/components/elements/CardContainer";
 import BtcLongShort from "@/components/BtcLongShort";
 
